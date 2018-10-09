@@ -1,0 +1,40 @@
+version: '3'
+
+volumes:
+  local_elearningadmin_db:
+
+networks:
+  elearningadmin:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.19.0.0/16
+
+services:
+  app:
+    container_name: elearningadmin_app
+    build: .
+    ports:
+      - '80:80'
+    volumes:
+      - './:/var/www/elearningadmin'
+    depends_on:
+      - elearningadmin_mysql
+    networks:
+      - elearningadmin
+
+  elearning_mysql:
+    container_name: elearningadmin_db
+    image: 'mysql:5.7'
+    ports:
+      - '3306:3306'
+    volumes:
+      - 'local_elearningadmin_db:/var/lib/mysql:cached'
+    environment:
+      MYSQL_ROOT_PASSWORD: admin12345
+      MYSQL_DATABASE: elearning
+      MYSQL_USER: elearner
+      MYSQL_PASSWORD: 12345678
+    networks:
+      - elearningadmin
