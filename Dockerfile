@@ -20,4 +20,7 @@ RUN cp ./build/ini/php-custom.ini /usr/local/etc/php/conf.d/
 RUN a2enmod rewrite && \
     a2enmod expires
 
+RUN a2dissite 000-default.conf
+RUN a2ensite elearning-admin.conf
+
 EXPOSE 80
