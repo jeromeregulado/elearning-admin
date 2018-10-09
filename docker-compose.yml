@@ -20,11 +20,11 @@ services:
     volumes:
       - './:/var/www/elearningadmin'
     depends_on:
-      - elearningadmin_mysql
+      - mysql
     networks:
       - elearningadmin
 
-  elearning_mysql:
+  mysql:
     container_name: elearningadmin_db
     image: 'mysql:5.7'
     ports:
