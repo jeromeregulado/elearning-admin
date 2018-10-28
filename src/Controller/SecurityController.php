@@ -33,6 +33,11 @@ class SecurityController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN') ||
+            $this->get('security.authorization_checker')->isGranted('ROLE_TEACHER')) {
+            return new RedirectResponse($this->generateUrl('easyadmin'));
+        }
+
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
