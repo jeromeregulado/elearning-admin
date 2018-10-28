@@ -1,4 +1,7 @@
 {
+    "alterphp/easyadmin-extension-bundle": {
+        "version": "v1.3.2"
+    },
     "api-platform/api-pack": {
         "version": "1.1.0"
     },
