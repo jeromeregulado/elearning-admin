@@ -19,7 +19,6 @@ class UserFixture extends Fixture
     public function load(ObjectManager $manager)
     {
         $user = new User();
-
         $user->setFirstName('admin')
             ->setLastName('elearner')
             ->setUuid('admin')
@@ -27,7 +26,28 @@ class UserFixture extends Fixture
             ->setCreatedAt(new \DateTime())
             ->setUpdatedAt(new \DateTime())
             ->setPassword($this->passwordEncoder->encodePassword($user, '123456'));
+        $manager->persist($user);
+        $manager->flush();
 
+        $user = new User();
+        $user->setFirstName('teacher')
+            ->setLastName('one')
+            ->setUuid('EMP1')
+            ->setRoles(['ROLE_TEACHER'])
+            ->setCreatedAt(new \DateTime())
+            ->setUpdatedAt(new \DateTime())
+            ->setPassword($this->passwordEncoder->encodePassword($user, '123456'));
+        $manager->persist($user);
+        $manager->flush();
+
+        $user = new User();
+        $user->setFirstName('stud')
+            ->setLastName('one')
+            ->setUuid('STUD1')
+            ->setRoles(['ROLE_USER'])
+            ->setCreatedAt(new \DateTime())
+            ->setUpdatedAt(new \DateTime())
+            ->setPassword($this->passwordEncoder->encodePassword($user, '123456'));
         $manager->persist($user);
         $manager->flush();
     }

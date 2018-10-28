@@ -4,11 +4,13 @@
 
 {% block body %}
     <form method="post" action="{{ path('user_login') }}">
+        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+
         {% if error %}
             <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            <br>
         {% endif %}
 
-        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
         <label for="inputUsername" class="sr-only">Username</label>
         <input type="text" value="{{ last_username }}" name="username" id="inputUsername" class="form-control" placeholder="Username" required autofocus>
         <label for="inputPassword" class="sr-only">Password</label>
