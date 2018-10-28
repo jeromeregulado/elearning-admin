@@ -35,7 +35,6 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
         $this->router = $router;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->passwordEncoder = $passwordEncoder;
-        dump('asd');
     }
 
     public function supports(Request $request)
@@ -71,6 +70,10 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 
         if (!$user) {
             throw new CustomUserMessageAuthenticationException('Employee could not be found.');
+        }
+
+        if (array_intersect(['ROLE_STUDENT', 'ROLE_PARENT'], $user->getRoles())) {
+            throw new CustomUserMessageAuthenticationException('Access Denied.');
         }
 
         return $user;
