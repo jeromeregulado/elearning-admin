@@ -72,6 +72,10 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             throw new CustomUserMessageAuthenticationException('Employee could not be found.');
         }
 
+        if (array_intersect(['ROLE_STUDENT', 'ROLE_PARENT'], $user->getRoles())) {
+            throw new CustomUserMessageAuthenticationException('Access Denied.');
+        }
+
         return $user;
     }
 
