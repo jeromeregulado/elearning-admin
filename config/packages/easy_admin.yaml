@@ -1,0 +1,9 @@
+easy_admin:
+    entities:
+        # List the entity class name you want to manage
+        Teacher:
+            class: App\Entity\User
+            controller: App\Controller\TeacherUserController
+        Student:
+            class: App\Entity\User
+            controller: App\Controller\StudentUserController
