@@ -20,7 +20,7 @@ class UserFixture extends Fixture
     {
         $user = new User();
         $user->setFirstName('admin')
-            ->setLastName('elearner')
+            ->setLastName('admin')
             ->setUuid('admin')
             ->setRoles(['ROLE_ADMIN', 'ROLE_TEACHER', 'ROLE_USER'])
             ->setCreatedAt(new \DateTime())
@@ -30,9 +30,9 @@ class UserFixture extends Fixture
         $manager->flush();
 
         $user = new User();
-        $user->setFirstName('teacher')
-            ->setLastName('one')
-            ->setUuid('EMP1')
+        $user->setFirstName('Teacher 1')
+            ->setLastName('Teacher')
+            ->setUuid('emp1')
             ->setRoles(['ROLE_TEACHER'])
             ->setCreatedAt(new \DateTime())
             ->setUpdatedAt(new \DateTime())
@@ -41,9 +41,9 @@ class UserFixture extends Fixture
         $manager->flush();
 
         $user = new User();
-        $user->setFirstName('stud')
-            ->setLastName('one')
-            ->setUuid('STUD1')
+        $user->setFirstName('Student 1')
+            ->setLastName('Student')
+            ->setUuid('stud1')
             ->setRoles(['ROLE_USER'])
             ->setCreatedAt(new \DateTime())
             ->setUpdatedAt(new \DateTime())
