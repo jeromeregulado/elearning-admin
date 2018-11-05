@@ -8,6 +8,10 @@ security:
         App\Entity\User:
             algorithm: bcrypt
             cost: 12
+        App\Entity\Student:
+            algorithm: bcrypt
+            cost: 12
+
 
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
@@ -15,6 +19,11 @@ security:
         elearner_user_provider:
             entity:
                 class: App\Entity\User
+                property: uuid
+        # used to reload user from session & other features (e.g. switch_user)
+        elearner_student_provider:
+            entity:
+                class: App\Entity\Student
                 property: uuid
     firewalls:
         dev:
@@ -25,6 +34,7 @@ security:
             pattern:  ^/api/login
             stateless: true
             anonymous: true
+            provider: elearner_student_provider
             guard:
                 authenticators:
                     - lexik_jwt_authentication.jwt_token_authenticator
@@ -35,13 +45,14 @@ security:
 
         api:
             pattern:   ^/api
-            provider: elearner_user_provider
+            provider: elearner_student_provider
             stateless: true
             guard:
                 authenticators:
                     - lexik_jwt_authentication.jwt_token_authenticator
         main:
             anonymous: ~
+            provider: elearner_user_provider
             guard:
                 authenticators:
                     - App\Security\LoginFormAuthenticator
