@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -57,6 +59,12 @@ class User implements UserInterface
     private $lastName;
 
     /**
+     * @var bool
+     * @ORM\Column(name="is_active", type="boolean")
+     */
+    private $isActive;
+
+    /**
      * @var string
      * @ORM\Column(name="email", type="string", nullable=true)
      */
@@ -87,10 +95,20 @@ class User implements UserInterface
     private $updatedAt;
 
     /**
-     * @var datetime
-     * @ORM\Column(name="deleted_at", type="datetime", nullable=true)
+     * @var \App\Entity\Attendance
+     * @ORM\OneToMany(targetEntity="App\Entity\Attendance", mappedBy="teacher")
      */
-    private $deletedAt;
+    private $attendance;
+
+    public function __construct()
+    {
+        $this->attendance = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return (string) "$this->id - $this->firstName $this->lastName";
+    }
 
     public function getId(): ?int
     {
@@ -126,7 +144,7 @@ class User implements UserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles[] = 'ROLE_TEACHER';
 
         return array_unique($roles);
     }
@@ -278,14 +296,45 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getDeletedAt(): ?\DateTimeInterface
+    public function getIsActive(): ?bool
     {
-        return $this->deletedAt;
+        return $this->isActive;
     }
 
-    public function setDeletedAt(?\DateTimeInterface $deletedAt): self
+    public function setIsActive(bool $isActive): self
     {
-        $this->deletedAt = $deletedAt;
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Attendance[]
+     */
+    public function getAttendance(): Collection
+    {
+        return $this->attendance;
+    }
+
+    public function addAttendance(Attendance $attendance): self
+    {
+        if (!$this->attendance->contains($attendance)) {
+            $this->attendance[] = $attendance;
+            $attendance->setTeacher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAttendance(Attendance $attendance): self
+    {
+        if ($this->attendance->contains($attendance)) {
+            $this->attendance->removeElement($attendance);
+            // set the owning side to null (unless already changed)
+            if ($attendance->getTeacher() === $this) {
+                $attendance->setTeacher(null);
+            }
+        }
 
         return $this;
     }

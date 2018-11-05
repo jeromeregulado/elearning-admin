@@ -3,16 +3,18 @@
  * Created by PhpStorm.
  * User: jarngotostos
  * Date: 10/28/18
- * Time: 4:33 PM
+ * Time: 4:00 PM
  */
 
 namespace App\Controller;
 
 use AlterPHP\EasyAdminExtensionBundle\Controller\AdminController;
+use Doctrine\ORM\QueryBuilder;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
-class StudentUserController extends  AdminController
+class TeacherController extends AdminController
 {
     /**
      * @Route("/", name="easyadmin")
@@ -22,7 +24,7 @@ class StudentUserController extends  AdminController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function indexAction(Request $request)
     {
@@ -59,15 +61,15 @@ class StudentUserController extends  AdminController
      * @param string|null $sortField
      * @param string|null $dqlFilter
      *
-     * @return \Doctrine\ORM\QueryBuilder The Query Builder instance
+     * @return QueryBuilder The Query Builder instance
      */
     protected function createListQueryBuilder($entityClass, $sortDirection, $sortField = null, $dqlFilter = null)
     {
         $qb = parent::createListQueryBuilder($entityClass, $sortDirection, $sortField, $dqlFilter);
 
         $qb->where('entity.roles LIKE :roles')
-            ->andWhere('entity.id != 1')
-            ->setParameter('roles', '%"ROLE_STUDENT"%')
+            ->andWhere('entity.firstName != \'admin\'')
+            ->setParameter('roles', '%"ROLE_TEACHER"%')
             ->addOrderBy('entity.id', 'DESC')
         ;
 
