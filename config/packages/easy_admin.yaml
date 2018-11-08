@@ -7,6 +7,18 @@ easy_admin:
         Student:
             class: App\Entity\Student
             controller: App\Controller\StudentController
+            search:
+                fields: ['uuid', 'firstName', 'lastName']
+            list:
+                actions: ['new', 'edit', 'search', '-delete']
+                fields:
+                    - { property: 'uuid', label: 'Student ID' }
+                    - { property: 'firstName', label: 'First Name' }
+                    - { property: 'lastName', label: 'Last Name' }
+                    - { property: 'birthday', label: 'Birthday' }
+                    - { property: 'createdAt', label: 'Created' }
+            edit:
+                actions: ['-delete']
         Attendance:
             class: App\Entity\Attendance
 #            controller: App\Controller\StudentController
