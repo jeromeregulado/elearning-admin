@@ -36,18 +36,6 @@ class Task
      */
     private $isActive;
 
-    /**
-     * @var datetime
-     * @ORM\Column(name="created_at", type="datetime")
-     */
-    private $createdAt;
-
-    /**
-     * @var datetime
-     * @ORM\Column(name="updated_at", type="datetime")
-     */
-    private $updatedAt;
-
     public function getId(): ?int
     {
         return $this->id;
@@ -76,29 +64,4 @@ class Task
 
         return $this;
     }
-
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeInterface
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
 }

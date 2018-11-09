@@ -24,33 +24,25 @@ class SubjectFixture extends Fixture
     {
         $subject = new Subject();
         $subject->setName("Mathematics")
-            ->setIsActive(1)
-            ->setCreatedAt(new \DateTime())
-            ->setUpdatedAt(new \DateTime());
+            ->setIsActive(1);
         $manager->persist($subject);
         $manager->flush();
 
         $subject = new Subject();
         $subject->setName("Science")
-            ->setIsActive(1)
-            ->setCreatedAt(new \DateTime())
-            ->setUpdatedAt(new \DateTime());
+            ->setIsActive(1);
         $manager->persist($subject);
         $manager->flush();
 
         $subject = new Subject();
         $subject->setName("Arts")
-            ->setIsActive(1)
-            ->setCreatedAt(new \DateTime())
-            ->setUpdatedAt(new \DateTime());
+            ->setIsActive(1);
         $manager->persist($subject);
         $manager->flush();
 
         $subject = new Subject();
         $subject->setName("English")
-            ->setIsActive(1)
-            ->setCreatedAt(new \DateTime())
-            ->setUpdatedAt(new \DateTime());
+            ->setIsActive(1);
         $manager->persist($subject);
         $manager->flush();
     }

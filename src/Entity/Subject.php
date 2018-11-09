@@ -8,6 +8,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -37,16 +39,15 @@ class Subject
     private $isActive;
 
     /**
-     * @var datetime
-     * @ORM\Column(name="created_at", type="datetime")
+     * @var \App\Entity\Advisory
+     * @ORM\OneToMany(targetEntity="App\Entity\Advisory", mappedBy="subject")
      */
-    private $createdAt;
+    private $advisory;
 
-    /**
-     * @var datetime
-     * @ORM\Column(name="updated_at", type="datetime")
-     */
-    private $updatedAt;
+    public function __construct()
+    {
+        $this->advisory = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -77,26 +78,33 @@ class Subject
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    /**
+     * @return Collection|Advisory[]
+     */
+    public function getAdvisory(): Collection
     {
-        return $this->createdAt;
+        return $this->advisory;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function addAdvisory(Advisory $advisory): self
     {
-        $this->createdAt = $createdAt;
+        if (!$this->advisory->contains($advisory)) {
+            $this->advisory[] = $advisory;
+            $advisory->setSubject($this);
+        }
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function removeAdvisory(Advisory $advisory): self
     {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
+        if ($this->advisory->contains($advisory)) {
+            $this->advisory->removeElement($advisory);
+            // set the owning side to null (unless already changed)
+            if ($advisory->getSubject() === $this) {
+                $advisory->setSubject(null);
+            }
+        }
 
         return $this;
     }

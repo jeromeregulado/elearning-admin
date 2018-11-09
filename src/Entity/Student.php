@@ -96,9 +96,16 @@ class Student implements UserInterface
      */
     private $attendance;
 
+    /**
+     * @var \App\Entity\Section
+     * @ORM\ManyToMany(targetEntity="App\Entity\Section", inversedBy="student")
+     */
+    private $section;
+
     public function __construct()
     {
         $this->attendance = new ArrayCollection();
+        $this->section = new ArrayCollection();
     }
 
     public function __toString()
@@ -244,30 +251,6 @@ class Student implements UserInterface
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeInterface
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
     /**
      * @return Collection|Attendance[]
      */
@@ -331,6 +314,32 @@ class Student implements UserInterface
     public function setGuardianContact(?string $guardianContact): self
     {
         $this->guardianContact = $guardianContact;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Section[]
+     */
+    public function getSection(): Collection
+    {
+        return $this->section;
+    }
+
+    public function addSection(Section $section): self
+    {
+        if (!$this->section->contains($section)) {
+            $this->section[] = $section;
+        }
+
+        return $this;
+    }
+
+    public function removeSection(Section $section): self
+    {
+        if ($this->section->contains($section)) {
+            $this->section->removeElement($section);
+        }
 
         return $this;
     }

@@ -24,9 +24,8 @@ class UserFixture extends Fixture
             ->setLastName('admin')
             ->setUuid('admin')
             ->setRoles(['ROLE_ADMIN', 'ROLE_TEACHER', 'ROLE_USER'])
-            ->setCreatedAt(new \DateTime())
-            ->setUpdatedAt(new \DateTime())
             ->setIsActive(1)
+            ->setAddress('Address here')
             ->setPassword($this->passwordEncoder->encodePassword($user, '123456'));
         $manager->persist($user);
         $manager->flush();
@@ -36,9 +35,8 @@ class UserFixture extends Fixture
             ->setLastName('Teacher')
             ->setUuid('emp1')
             ->setRoles(['ROLE_TEACHER'])
-            ->setCreatedAt(new \DateTime())
-            ->setUpdatedAt(new \DateTime())
             ->setIsActive(1)
+            ->setAddress('Address here')
             ->setPassword($this->passwordEncoder->encodePassword($user, '123456'));
         $manager->persist($user);
         $manager->flush();
@@ -49,9 +47,8 @@ class UserFixture extends Fixture
             ->setUuid('stud1')
             ->setRoles(['ROLE_STUDENT'])
             ->setBirthday(\DateTime::createFromFormat("Y-m-d", "1996-11-07"))
-            ->setCreatedAt(new \DateTime())
-            ->setUpdatedAt(new \DateTime())
             ->setIsActive(1)
+            ->setAddress('Address here')
             ->setPassword($this->passwordEncoder->encodePassword($user, '123456'));
         $manager->persist($user);
         $manager->flush();

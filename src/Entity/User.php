@@ -88,9 +88,16 @@ class User implements UserInterface
      */
     private $attendance;
 
+    /**
+     * @var \App\Entity\Advisory
+     * @ORM\OneToMany(targetEntity="App\Entity\Advisory", mappedBy="teacher")
+     */
+    private $advisory;
+
     public function __construct()
     {
         $this->attendance = new ArrayCollection();
+        $this->advisory = new ArrayCollection();
     }
 
     public function __toString()
@@ -260,30 +267,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    public function getUpdatedAt(): ?\DateTimeInterface
-    {
-        return $this->updatedAt;
-    }
-
-    public function setUpdatedAt(\DateTimeInterface $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
-
-        return $this;
-    }
-
     public function getIsActive(): ?bool
     {
         return $this->isActive;
@@ -335,6 +318,37 @@ class User implements UserInterface
     public function setAddress(string $address): self
     {
         $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Advisory[]
+     */
+    public function getAdvisory(): Collection
+    {
+        return $this->advisory;
+    }
+
+    public function addAdvisory(Advisory $advisory): self
+    {
+        if (!$this->advisory->contains($advisory)) {
+            $this->advisory[] = $advisory;
+            $advisory->setTeacher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdvisory(Advisory $advisory): self
+    {
+        if ($this->advisory->contains($advisory)) {
+            $this->advisory->removeElement($advisory);
+            // set the owning side to null (unless already changed)
+            if ($advisory->getTeacher() === $this) {
+                $advisory->setTeacher(null);
+            }
+        }
 
         return $this;
     }

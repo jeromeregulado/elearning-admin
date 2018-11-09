@@ -23,33 +23,25 @@ class TaskFixture extends Fixture
     {
         $task = new Task();
         $task->setName("Homework")
-            ->setIsActive(1)
-            ->setCreatedAt(new \DateTime())
-            ->setUpdatedAt(new \DateTime());
+            ->setIsActive(1);
         $manager->persist($task);
         $manager->flush();
 
         $task = new Task();
         $task->setName("Activity")
-            ->setIsActive(1)
-            ->setCreatedAt(new \DateTime())
-            ->setUpdatedAt(new \DateTime());
+            ->setIsActive(1);
         $manager->persist($task);
         $manager->flush();
 
         $task = new Task();
         $task->setName("Quiz")
-            ->setIsActive(1)
-            ->setCreatedAt(new \DateTime())
-            ->setUpdatedAt(new \DateTime());
+            ->setIsActive(1);
         $manager->persist($task);
         $manager->flush();
 
         $task = new Task();
         $task->setName("Exam")
-            ->setIsActive(1)
-            ->setCreatedAt(new \DateTime())
-            ->setUpdatedAt(new \DateTime());
+            ->setIsActive(1);
         $manager->persist($task);
         $manager->flush();
     }
