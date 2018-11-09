@@ -5,10 +5,12 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Context;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\StudentRepository")
+ * @ORM\Table(name="user_student")
  */
 class Student implements UserInterface
 {
@@ -71,16 +73,22 @@ class Student implements UserInterface
     private $birthday;
 
     /**
-     * @var datetime
-     * @ORM\Column(name="created_at", type="datetime")
+     * @var longtext
+     * @ORM\Column(name="address", type="text")
      */
-    private $createdAt;
+    private $address;
 
     /**
-     * @var datetime
-     * @ORM\Column(name="updated_at", type="datetime")
+     * @var string
+     * @ORM\Column(name="guardian", type="string", nullable=true)
      */
-    private $updatedAt;
+    private $guardian;
+
+    /**
+     * @var string
+     * @ORM\Column(name="guardian_contact", type="string", nullable=true)
+     */
+    private $guardianContact;
 
     /**
      * @var \App\Entity\Attendance
@@ -287,6 +295,42 @@ class Student implements UserInterface
                 $attendance->setStudent(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(string $address): self
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getGuardian(): ?string
+    {
+        return $this->guardian;
+    }
+
+    public function setGuardian(?string $guardian): self
+    {
+        $this->guardian = $guardian;
+
+        return $this;
+    }
+
+    public function getGuardianContact(): ?string
+    {
+        return $this->guardianContact;
+    }
+
+    public function setGuardianContact(?string $guardianContact): self
+    {
+        $this->guardianContact = $guardianContact;
 
         return $this;
     }

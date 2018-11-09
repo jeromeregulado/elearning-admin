@@ -4,6 +4,19 @@ easy_admin:
         Teacher:
             class: App\Entity\User
             controller: App\Controller\TeacherController
+            search:
+                fields: ['uuid', 'firstName', 'lastName']
+            list:
+                actions: ['new', 'edit', 'search', '-delete']
+                fields:
+                - { property: 'uuid', label: 'ID' }
+                - { property: 'firstName', label: 'First Name' }
+                - { property: 'lastName', label: 'Last Name' }
+                - { property: 'email', label: 'email' }
+                - { property: 'mobileNumber', label: 'Mobile' }
+                - { property: 'isActive', label: 'Is Active' }
+            edit:
+                actions: ['-delete']
         Student:
             class: App\Entity\Student
             controller: App\Controller\StudentController
@@ -12,7 +25,7 @@ easy_admin:
             list:
                 actions: ['new', 'edit', 'search', '-delete']
                 fields:
-                    - { property: 'uuid', label: 'Student ID' }
+                    - { property: 'uuid', label: 'ID' }
                     - { property: 'firstName', label: 'First Name' }
                     - { property: 'lastName', label: 'Last Name' }
                     - { property: 'birthday', label: 'Birthday' }

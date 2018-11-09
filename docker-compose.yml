@@ -28,7 +28,7 @@ services:
     container_name: elearningadmin_db
     image: 'mysql:5.7'
     ports:
-      - '3306:3306'
+      - '3406:3306'
     volumes:
       - 'local_elearningadmin_db:/var/lib/mysql:cached'
     environment:

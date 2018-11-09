@@ -77,22 +77,10 @@ class User implements UserInterface
     private $mobileNumber;
 
     /**
-     * @var datetime
-     * @ORM\Column(name="birthday", type="datetime", nullable=true)
+     * @var text
+     * @ORM\Column(name="address", type="text")
      */
-    private $birthday;
-
-    /**
-     * @var datetime
-     * @ORM\Column(name="created_at", type="datetime")
-     */
-    private $createdAt;
-
-    /**
-     * @var datetime
-     * @ORM\Column(name="updated_at", type="datetime")
-     */
-    private $updatedAt;
+    private $address;
 
     /**
      * @var \App\Entity\Attendance
@@ -335,6 +323,18 @@ class User implements UserInterface
                 $attendance->setTeacher(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(string $address): self
+    {
+        $this->address = $address;
 
         return $this;
     }
