@@ -62,6 +62,11 @@ class Section
         $this->advisory = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return (string) $this->name . " - " . $this->level;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

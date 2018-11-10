@@ -110,7 +110,7 @@ class Student implements UserInterface
 
     public function __toString()
     {
-        return (string) "$this->id - $this->firstName $this->lastName";
+        return (string) "$this->uuid - $this->firstName $this->lastName";
     }
 
     public function getId(): ?int

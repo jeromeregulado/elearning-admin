@@ -32,14 +32,11 @@ class StudentController extends  AdminController
      */
     protected function prePersistEntity($entity)
     {
-
         $entity
             ->setUuid(date('Y') . rand(0,500000))
             ->setRoles(['ROLE_STUDENT'])
             ->setIsActive(1)
             ->setPassword($this->encoder->encodePassword($entity, str_replace('-', '', $entity->getBirthday()->format("yyyy-MM-dd"))))
-            ->setCreatedAt(new \DateTime())
-            ->setUpdatedAt(new \DateTime())
         ;
 
         return parent::prePersistEntity($entity);
@@ -94,8 +91,6 @@ class StudentController extends  AdminController
         $builder->remove('uuid')
             ->remove('isActive')
             ->remove('password')
-            ->remove('createdAt')
-            ->remove('updatedAt')
             ->remove('attendance')
         ;
 

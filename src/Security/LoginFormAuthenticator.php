@@ -19,6 +19,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\User\InMemoryUserProvider;
 
 class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
 {
@@ -28,13 +29,15 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
     private $router;
     private $csrfTokenManager;
     private $passwordEncoder;
+    private $inMemory;
 
-    public function __construct(EntityManagerInterface $entityManager, RouterInterface $router, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder)
+    public function __construct(EntityManagerInterface $entityManager, RouterInterface $router, CsrfTokenManagerInterface $csrfTokenManager, UserPasswordEncoderInterface $passwordEncoder, InMemoryUserProvider $inMemory)
     {
         $this->entityManager = $entityManager;
         $this->router = $router;
         $this->csrfTokenManager = $csrfTokenManager;
         $this->passwordEncoder = $passwordEncoder;
+        $this->inMemory = $inMemory;
     }
 
     public function supports(Request $request)
@@ -65,8 +68,12 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator
             throw new InvalidCsrfTokenException();
         }
 
-        $user = $this->entityManager->getRepository(User::class)
-            ->findOneBy(['uuid' => $credentials['username']]);
+        if ($credentials['username'] == 'admin') {
+            $user = $this->inMemory->loadUserByUsername($credentials['username']);
+        } else {
+            $user = $this->entityManager->getRepository(User::class)
+                ->findOneBy(['uuid' => $credentials['username']]);
+        }
 
         if (!$user) {
             throw new CustomUserMessageAuthenticationException('Employee could not be found.');
