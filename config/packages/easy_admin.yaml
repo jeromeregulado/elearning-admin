@@ -1,23 +1,14 @@
 easy_admin:
   entities:
-    # List the entity class name you want to manage
-    Teacher:
-      class: App\Entity\User
-      controller: App\Controller\TeacherController
-      search:
-        fields: ['uuid', 'firstName', 'lastName']
-      list:
-        actions: ['new', 'edit', 'search', '-delete']
-        fields:
-          - { property: 'uuid', label: 'ID' }
-          - { property: 'firstName', label: 'First Name' }
-          - { property: 'lastName', label: 'Last Name' }
-          - { property: 'email', label: 'email' }
-          - { property: 'mobileNumber', label: 'Mobile' }
-          - { property: 'isActive', label: 'Is Active' }
-      edit:
-        actions: ['-delete']
+    Calendar:
+      role: ROLE_TEACHER
+      class: App\Entity\Event
+#      controller: App\Controller\CalendarController
+    Grades:
+      role: ROLE_TEACHER
+      class: App\Entity\Grades
     Student:
+      role: ROLE_TEACHER
       class: App\Entity\Student
       controller: App\Controller\StudentController
       search:
@@ -29,11 +20,53 @@ easy_admin:
           - { property: 'firstName', label: 'First Name' }
           - { property: 'lastName', label: 'Last Name' }
           - { property: 'birthday', label: 'Birthday' }
+      new:
+        fields:
+          - { property: 'firstName' }
+          - { property: 'middleName' }
+          - { property: 'lastName' }
+          - { property: 'birthday' }
+          - { property: 'address' }
+          - { type: 'divider' }
+          - { property: 'guardian' }
+          - { property: 'guardianContact' }
+          - { type: 'divider' }
+          - { property: 'section', type_options: { required: true } }
+      edit:
+        actions: ['-delete']
+
+    Homework:
+      role: ROLE_TEACHER
+      class: App\Entity\Homework
+    Lesson:
+      role: ROLE_TEACHER
+      class: App\Entity\Lesson
+    Activity:
+      role: ROLE_TEACHER
+      class: App\Entity\Activity
+    # List the entity class name you want to manage
+    Teacher:
+      role: ROLE_ADMIN
+      class: App\Entity\User
+      controller: App\Controller\TeacherController
+      search:
+        fields: ['uuid', 'firstName', 'lastName']
+      list:
+        actions: ['new', 'edit', 'search', '-delete']
+        fields:
+          - { property: 'uuid', label: 'ID' }
+          - { property: 'firstName', label: 'First Name' }
+          - { property: 'lastName', label: 'Last Name' }
+          - { property: 'email', label: 'Email' }
+          - { property: 'mobileNumber', label: 'Mobile' }
+          - { property: 'isActive', label: 'Is Active' }
       edit:
         actions: ['-delete']
     Attendance:
+      role: ROLE_TEACHER
       class: App\Entity\Attendance
 #      controller: App\Controller\StudentController
     Advisory:
+      role: ROLE_ADMIN
       class: App\Entity\Advisory
 #      controller: App\Controller\AdvisoryController

@@ -19,93 +19,114 @@ class Student implements UserInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $uuid;
+    protected $uuid;
 
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    protected $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private $password;
+    protected $password;
 
     /**
      * @var string Plain password
      */
-    private $plainPassword;
+    protected $plainPassword;
 
     /**
      * @var string
      * @ORM\Column(name="first_name", type="string")
      */
-    private $firstName;
+    protected $firstName;
 
     /**
      * @var string
      * @ORM\Column(name="middle_name", type="string", nullable=true)
      */
-    private $middleName;
+    protected $middleName;
 
     /**
      * @var string
      * @ORM\Column(name="last_name", type="string")
      */
-    private $lastName;
+    protected $lastName;
 
     /**
      * @var bool
      * @ORM\Column(name="is_active", type="boolean")
      */
-    private $isActive;
+    protected $isActive;
 
     /**
      * @var datetime
      * @ORM\Column(name="birthday", type="date")
      */
-    private $birthday;
+    protected $birthday;
 
     /**
      * @var longtext
      * @ORM\Column(name="address", type="text")
      */
-    private $address;
+    protected $address;
 
     /**
      * @var string
      * @ORM\Column(name="guardian", type="string", nullable=true)
      */
-    private $guardian;
+    protected $guardian;
 
     /**
      * @var string
      * @ORM\Column(name="guardian_contact", type="string", nullable=true)
      */
-    private $guardianContact;
+    protected $guardianContact;
 
     /**
      * @var \App\Entity\Attendance
      * @ORM\OneToMany(targetEntity="App\Entity\Attendance", mappedBy="student")
      */
-    private $attendance;
+    protected $attendance;
 
     /**
      * @var \App\Entity\Section
-     * @ORM\ManyToMany(targetEntity="App\Entity\Section", inversedBy="student")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Section", inversedBy="student")
      */
-    private $section;
+    protected $section;
+
+    /**
+     * @var \App\Entity\Message
+     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="student")
+     */
+    protected $message;
+
+    /**
+     * @var \App\Entity\Activity
+     * @ORM\OneToMany(targetEntity="App\Entity\Activity", mappedBy="student")
+     */
+    protected $activity;
+
+    /**
+     * @var \App\Entity\Grades
+     * @ORM\OneToMany(targetEntity="App\Entity\Grades", mappedBy="student")
+     */
+    protected $grades;
 
     public function __construct()
     {
         $this->attendance = new ArrayCollection();
         $this->section = new ArrayCollection();
+        $this->message = new ArrayCollection();
+        $this->activity = new ArrayCollection();
+        $this->grades = new ArrayCollection();
     }
 
     public function __toString()
@@ -340,6 +361,106 @@ class Student implements UserInterface
         if ($this->section->contains($section)) {
             $this->section->removeElement($section);
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getMessage(): Collection
+    {
+        return $this->message;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->message->contains($message)) {
+            $this->message[] = $message;
+            $message->setStudent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->message->contains($message)) {
+            $this->message->removeElement($message);
+            // set the owning side to null (unless already changed)
+            if ($message->getStudent() === $this) {
+                $message->setStudent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Activity[]
+     */
+    public function getActivity(): Collection
+    {
+        return $this->activity;
+    }
+
+    public function addActivity(Activity $activity): self
+    {
+        if (!$this->activity->contains($activity)) {
+            $this->activity[] = $activity;
+            $activity->setStudent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActivity(Activity $activity): self
+    {
+        if ($this->activity->contains($activity)) {
+            $this->activity->removeElement($activity);
+            // set the owning side to null (unless already changed)
+            if ($activity->getStudent() === $this) {
+                $activity->setStudent(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Grades[]
+     */
+    public function getGrades(): Collection
+    {
+        return $this->grades;
+    }
+
+    public function addGrade(Grades $grade): self
+    {
+        if (!$this->grades->contains($grade)) {
+            $this->grades[] = $grade;
+            $grade->setSubject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGrade(Grades $grade): self
+    {
+        if ($this->grades->contains($grade)) {
+            $this->grades->removeElement($grade);
+            // set the owning side to null (unless already changed)
+            if ($grade->getSubject() === $this) {
+                $grade->setSubject(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function setSection(?Section $section): self
+    {
+        $this->section = $section;
 
         return $this;
     }

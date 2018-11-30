@@ -40,7 +40,7 @@ class Section
 
     /**
      * @var \App\Entity\Student
-     * @ORM\ManyToMany(targetEntity="App\Entity\Student", mappedBy="section")
+     * @ORM\OneToMany(targetEntity="App\Entity\Student", mappedBy="section")
      */
     private $student;
 
@@ -163,6 +163,13 @@ class Section
                 $advisory->setSection(null);
             }
         }
+
+        return $this;
+    }
+
+    public function setStudent(?Student $student): self
+    {
+        $this->student = $student;
 
         return $this;
     }

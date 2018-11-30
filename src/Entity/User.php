@@ -17,87 +17,115 @@ class User implements UserInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $uuid;
+    protected $uuid;
 
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    protected $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private $password;
+    protected $password;
 
     /**
      * @var string Plain password
      */
-    private $plainPassword;
+    protected $plainPassword;
 
     /**
      * @var string
      * @ORM\Column(name="first_name", type="string")
      */
-    private $firstName;
+    protected $firstName;
 
     /**
      * @var string
      * @ORM\Column(name="middle_name", type="string", nullable=true)
      */
-    private $middleName;
+    protected $middleName;
 
     /**
      * @var string
      * @ORM\Column(name="last_name", type="string")
      */
-    private $lastName;
+    protected $lastName;
 
     /**
      * @var bool
      * @ORM\Column(name="is_active", type="boolean")
      */
-    private $isActive;
+    protected $isActive;
 
     /**
      * @var string
      * @ORM\Column(name="email", type="string", nullable=true)
      */
-    private $email;
+    protected $email;
 
     /**
      * @var string
      * @ORM\Column(name="mobile_number", type="string", nullable=true)
      */
-    private $mobileNumber;
+    protected $mobileNumber;
 
     /**
      * @var text
      * @ORM\Column(name="address", type="text")
      */
-    private $address;
+    protected $address;
 
     /**
      * @var \App\Entity\Attendance
      * @ORM\OneToMany(targetEntity="App\Entity\Attendance", mappedBy="teacher")
      */
-    private $attendance;
+    protected $attendance;
 
     /**
      * @var \App\Entity\Advisory
      * @ORM\OneToMany(targetEntity="App\Entity\Advisory", mappedBy="teacher")
      */
-    private $advisory;
+    protected $advisory;
+
+    /**
+     * @var \App\Entity\Lesson
+     * @ORM\OneToMany(targetEntity="App\Entity\Lesson", mappedBy="teacher")
+     */
+    protected $lesson;
+
+    /**
+     * @var \App\Entity\Message
+     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="teacher")
+     */
+    protected $message;
+
+    /**
+     * @var \App\Entity\Activity
+     * @ORM\OneToMany(targetEntity="App\Entity\Activity", mappedBy="teacher")
+     */
+    protected $activity;
+
+    /**
+     * @var \App\Entity\Grades
+     * @ORM\OneToMany(targetEntity="App\Entity\Grades", mappedBy="teacher")
+     */
+    protected $grades;
 
     public function __construct()
     {
         $this->attendance = new ArrayCollection();
         $this->advisory = new ArrayCollection();
+        $this->lesson = new ArrayCollection();
+        $this->message = new ArrayCollection();
+        $this->activity = new ArrayCollection();
+        $this->grades = new ArrayCollection();
     }
 
     public function __toString()
@@ -347,6 +375,130 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($advisory->getTeacher() === $this) {
                 $advisory->setTeacher(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Lesson[]
+     */
+    public function getLesson(): Collection
+    {
+        return $this->lesson;
+    }
+
+    public function addLesson(Lesson $lesson): self
+    {
+        if (!$this->lesson->contains($lesson)) {
+            $this->lesson[] = $lesson;
+            $lesson->setTeacher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLesson(Lesson $lesson): self
+    {
+        if ($this->lesson->contains($lesson)) {
+            $this->lesson->removeElement($lesson);
+            // set the owning side to null (unless already changed)
+            if ($lesson->getTeacher() === $this) {
+                $lesson->setTeacher(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getMessage(): Collection
+    {
+        return $this->message;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->message->contains($message)) {
+            $this->message[] = $message;
+            $message->setTeacher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->message->contains($message)) {
+            $this->message->removeElement($message);
+            // set the owning side to null (unless already changed)
+            if ($message->getTeacher() === $this) {
+                $message->setTeacher(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Activity[]
+     */
+    public function getActivity(): Collection
+    {
+        return $this->activity;
+    }
+
+    public function addActivity(Activity $activity): self
+    {
+        if (!$this->activity->contains($activity)) {
+            $this->activity[] = $activity;
+            $activity->setTeacher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActivity(Activity $activity): self
+    {
+        if ($this->activity->contains($activity)) {
+            $this->activity->removeElement($activity);
+            // set the owning side to null (unless already changed)
+            if ($activity->getTeacher() === $this) {
+                $activity->setTeacher(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Grades[]
+     */
+    public function getGrades(): Collection
+    {
+        return $this->grades;
+    }
+
+    public function addGrade(Grades $grade): self
+    {
+        if (!$this->grades->contains($grade)) {
+            $this->grades[] = $grade;
+            $grade->setSubject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeGrade(Grades $grade): self
+    {
+        if ($this->grades->contains($grade)) {
+            $this->grades->removeElement($grade);
+            // set the owning side to null (unless already changed)
+            if ($grade->getSubject() === $this) {
+                $grade->setSubject(null);
             }
         }
 

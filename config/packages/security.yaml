@@ -2,7 +2,7 @@ security:
     role_hierarchy:
         ROLE_STUDENT: [ROLE_PARENT, ROLE_USER]
         ROLE_TEACHER: [ROLE_TEACHER]
-        ROLE_ADMIN: [ROLE_TEACHER]
+        ROLE_ADMIN: [ROLE_ADMIN]
 
     encoders:
         App\Entity\User:
