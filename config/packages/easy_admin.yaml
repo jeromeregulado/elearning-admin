@@ -1,54 +1,26 @@
 easy_admin:
+  design:
+    menu:
+      - { label: 'Calendar', children: [ { entity: 'Event', label: 'List Events', roles: ['ROLE_TEACHER', 'ROLE_ADMIN'] }, { label: 'Calendar', url: '/event/1', target: '_blank' } ] }
+      - { entity: 'Student', roles: ['ROLE_TEACHER', 'ROLE_ADMIN'] }
+#      - { entity: 'Teacher', role: ROLE_ADMIN }
+      - { entity: 'Advisory', role: ROLE_ADMIN }
+      - { entity: 'Grades', label: 'Grades', role: ROLE_TEACHER }
+      - { entity: 'Homework', role: ROLE_TEACHER }
+      - { entity: 'Lesson', role: ROLE_TEACHER }
+      - { entity: 'Attendance', role: ROLE_TEACHER }
+      - { entity: 'Activity', role: ROLE_TEACHER }
   entities:
-    Calendar:
-      role: ROLE_TEACHER
+    Event:
+      roles: ['ROLE_TEACHER', 'ROLE_ADMIN']
       class: App\Entity\Event
-#      controller: App\Controller\CalendarController
-    Grades:
-      role: ROLE_TEACHER
-      class: App\Entity\Grades
-    Student:
-      role: ROLE_TEACHER
-      class: App\Entity\Student
-      controller: App\Controller\StudentController
-      search:
-        fields: ['uuid', 'firstName', 'lastName']
-      list:
-        actions: ['new', 'edit', 'search', '-delete']
-        fields:
-          - { property: 'uuid', label: 'ID' }
-          - { property: 'firstName', label: 'First Name' }
-          - { property: 'lastName', label: 'Last Name' }
-          - { property: 'birthday', label: 'Birthday' }
-      new:
-        fields:
-          - { property: 'firstName' }
-          - { property: 'middleName' }
-          - { property: 'lastName' }
-          - { property: 'birthday' }
-          - { property: 'address' }
-          - { type: 'divider' }
-          - { property: 'guardian' }
-          - { property: 'guardianContact' }
-          - { type: 'divider' }
-          - { property: 'section', type_options: { required: true } }
-      edit:
-        actions: ['-delete']
+      controller: App\Controller\EasyAdmin\EventController
 
-    Homework:
-      role: ROLE_TEACHER
-      class: App\Entity\Homework
-    Lesson:
-      role: ROLE_TEACHER
-      class: App\Entity\Lesson
-    Activity:
-      role: ROLE_TEACHER
-      class: App\Entity\Activity
-    # List the entity class name you want to manage
     Teacher:
       role: ROLE_ADMIN
+      disabled_actions: ['show']
       class: App\Entity\User
-      controller: App\Controller\TeacherController
+      controller: App\Controller\EasyAdmin\TeacherController
       search:
         fields: ['uuid', 'firstName', 'lastName']
       list:
@@ -62,11 +34,73 @@ easy_admin:
           - { property: 'isActive', label: 'Is Active' }
       edit:
         actions: ['-delete']
-    Attendance:
-      role: ROLE_TEACHER
-      class: App\Entity\Attendance
-#      controller: App\Controller\StudentController
+
     Advisory:
       role: ROLE_ADMIN
       class: App\Entity\Advisory
-#      controller: App\Controller\AdvisoryController
+      list:
+        fields: ['id', 'section', 'teacher', 'subject']
+
+    Grades:
+      actions: ['-delete']
+      class: App\Entity\Grades
+      list:
+        fields: ['subject', 'teacher', 'task', 'grade']
+      edit:
+        role: ROLE_TEACHER
+      delete:
+        role: ROLE_TEACHER
+
+    Student:
+      roles: ['ROLE_TEACHER', 'ROLE_ADMIN']
+      class: App\Entity\Student
+      controller: App\Controller\EasyAdmin\StudentController
+      search:
+        fields: ['uuid', 'firstName', 'lastName']
+      show:
+        fields:
+          - { property: 'uuid', label: 'Student ID:' }
+          - { property: 'fullName' }
+          - { property: 'birthday' }
+          - { property: 'address' }
+          - { property: 'section' }
+          - { property: 'grades', label: '', type: 'embedded_list' }
+      list:
+        actions: ['new', 'edit', 'search', 'show', '-delete']
+        fields:
+          - { property: 'uuid', label: 'ID' }
+          - { property: 'firstName', label: 'First Name' }
+          - { property: 'lastName', label: 'Last Name' }
+          - { property: 'birthday', label: 'Birthday' }
+      new:
+        role: ROLE_TEACHER
+        fields:
+          - { property: 'firstName' }
+          - { property: 'middleName' }
+          - { property: 'lastName' }
+          - { property: 'birthday' }
+          - { property: 'address' }
+          - { type: 'section' }
+          - { property: 'guardian' }
+          - { property: 'guardianContact' }
+          - { type: 'section' }
+          - { property: 'section', type_options: { required: true } }
+      edit:
+        role: ROLE_TEACHER
+        actions: ['-delete']
+
+    Homework:
+      role: ROLE_TEACHER
+      class: App\Entity\Homework
+
+    Lesson:
+      role: ROLE_TEACHER
+      class: App\Entity\Lesson
+
+    Activity:
+      role: ROLE_TEACHER
+      class: App\Entity\Activity
+
+    Attendance:
+      role: ROLE_TEACHER
+      class: App\Entity\Attendance

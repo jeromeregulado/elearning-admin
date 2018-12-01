@@ -32,13 +32,25 @@ class Event
 
     /**
      * @var date
-     * @ORM\Column(name="date", type="date")
+     * @ORM\Column(name="date_start", type="date")
      */
-    private $date;
+    private $dateStart;
+
+    /**
+     * @var date
+     * @ORM\Column(name="date_end", type="date", nullable=true)
+     */
+    private $dateEnd;
+
+    /**
+     * @var string
+     * @ORM\Column(name="title", type="string")
+     */
+    private $title;
 
     /**
      * @var text
-     * @ORM\Column(name="remarks", type="text")
+     * @ORM\Column(name="remarks", type="text", nullable=true)
      */
     private $remarks;
 
@@ -59,14 +71,38 @@ class Event
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getDateStart(): ?\DateTimeInterface
     {
-        return $this->date;
+        return $this->dateStart;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setDateStart(\DateTimeInterface $dateStart): self
     {
-        $this->date = $date;
+        $this->dateStart = $dateStart;
+
+        return $this;
+    }
+
+    public function getDateEnd(): ?\DateTimeInterface
+    {
+        return $this->dateEnd;
+    }
+
+    public function setDateEnd(?\DateTimeInterface $dateEnd): self
+    {
+        $this->dateEnd = $dateEnd;
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): self
+    {
+        $this->title = $title;
 
         return $this;
     }
@@ -76,7 +112,7 @@ class Event
         return $this->remarks;
     }
 
-    public function setRemarks(string $remarks): self
+    public function setRemarks(?string $remarks): self
     {
         $this->remarks = $remarks;
 

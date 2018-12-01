@@ -55,6 +55,11 @@ class Advisory
         $this->homework = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return (string) $this->section;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

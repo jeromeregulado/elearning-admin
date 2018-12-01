@@ -31,7 +31,7 @@ security:
         elearner_default:
             memory:
                 users:
-                    admin: { password: '$2y$12$c.6oj4SkPYc4yw0INtT0m.vt2XmQbuul1ChdHrOO4Owz2pAmVfyFy', roles: [ "ROLE_ADMIN", "ROLE_TEACHER", "ROLE_USER" ] }
+                    admin: { password: '$2y$12$c.6oj4SkPYc4yw0INtT0m.vt2XmQbuul1ChdHrOO4Owz2pAmVfyFy', roles: [ "ROLE_ADMIN" ] }
 
         elearner_multiple:
             chain:

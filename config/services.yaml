@@ -32,3 +32,7 @@ services:
 
     Symfony\Component\Security\Core\User\InMemoryUserProvider:
         alias: security.user.provider.concrete.elearner_default
+
+    App\EventListener\FullCalendarListener:
+        tags:
+            - { name: 'kernel.event_listener', event: 'fullcalendar.set_data', method: loadEvents }

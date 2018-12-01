@@ -6,7 +6,7 @@
  * Time: 4:27 PM
  */
 
-namespace App\Controller;
+namespace App\Controller\EasyAdmin;
 
 use AlterPHP\EasyAdminExtensionBundle\Controller\AdminController;
 

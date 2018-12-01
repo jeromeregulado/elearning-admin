@@ -123,7 +123,6 @@ class Student implements UserInterface
     public function __construct()
     {
         $this->attendance = new ArrayCollection();
-        $this->section = new ArrayCollection();
         $this->message = new ArrayCollection();
         $this->activity = new ArrayCollection();
         $this->grades = new ArrayCollection();
@@ -131,7 +130,80 @@ class Student implements UserInterface
 
     public function __toString()
     {
-        return (string) "$this->uuid - $this->firstName $this->lastName";
+        return (string) $this->uuid . " - " .$this->firstName . " " . $this->lastName;
+    }
+
+    public function getFullName()
+    {
+        return (string) $this->lastName . ", " . $this->firstName;
+    }
+
+    /**
+     * Returns the roles granted to the user.
+     *
+     *     public function getRoles()
+     *     {
+     *         return array('ROLE_USER');
+     *     }
+     *
+     * Alternatively, the roles might be stored on a ``roles`` property,
+     * and populated in any number of different ways when the user object
+     * is created.
+     *
+     * @return array (Role|string)[] The user roles
+     */
+    public function getRoles()
+    {
+        $roles = $this->roles;
+        $roles[] = 'ROLE_STUDENT';
+
+        return array_unique($roles);
+    }
+
+    /**
+     * Returns the password used to authenticate the user.
+     *
+     * This should be the encoded password. On authentication, a plain-text
+     * password will be salted, encoded, and then compared to this value.
+     *
+     * @return string The password
+     */
+    public function getPassword()
+    {
+        return (string) $this->password;
+    }
+
+    /**
+     * Returns the salt that was originally used to encode the password.
+     *
+     * This can return null if the password was not encoded using a salt.
+     *
+     * @return string|null The salt
+     */
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+
+    /**
+     * Returns the username used to authenticate the user.
+     *
+     * @return string The username
+     */
+    public function getUsername()
+    {
+        return (string) $this->uuid;
+    }
+
+    /**
+     * Removes sensitive data from the user.
+     *
+     * This is important if, at any given point, sensitive information like
+     * the plain-text password is stored on this object.
+     */
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
     }
 
     public function getId(): ?int
@@ -151,28 +223,6 @@ class Student implements UserInterface
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
-    public function getUsername(): string
-    {
-        return (string) $this->uuid;
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function getRoles(): array
-    {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_STUDENT
-        $roles[] = 'ROLE_STUDENT';
-
-        return array_unique($roles);
-    }
-
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -180,36 +230,11 @@ class Student implements UserInterface
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
-    public function getPassword(): string
-    {
-        return (string) $this->password;
-    }
-
     public function setPassword(string $password): self
     {
         $this->password = $password;
 
         return $this;
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function getSalt()
-    {
-        // not needed when using the "bcrypt" algorithm in security.yaml
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function eraseCredentials()
-    {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
     }
 
     public function getFirstName(): ?string
@@ -265,40 +290,9 @@ class Student implements UserInterface
         return $this->birthday;
     }
 
-    public function setBirthday(?\DateTimeInterface $birthday): self
+    public function setBirthday(\DateTimeInterface $birthday): self
     {
         $this->birthday = $birthday;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Attendance[]
-     */
-    public function getAttendance(): Collection
-    {
-        return $this->attendance;
-    }
-
-    public function addAttendance(Attendance $attendance): self
-    {
-        if (!$this->attendance->contains($attendance)) {
-            $this->attendance[] = $attendance;
-            $attendance->setStudent($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAttendance(Attendance $attendance): self
-    {
-        if ($this->attendance->contains($attendance)) {
-            $this->attendance->removeElement($attendance);
-            // set the owning side to null (unless already changed)
-            if ($attendance->getStudent() === $this) {
-                $attendance->setStudent(null);
-            }
-        }
 
         return $this;
     }
@@ -340,27 +334,44 @@ class Student implements UserInterface
     }
 
     /**
-     * @return Collection|Section[]
+     * @return Collection|Attendance[]
      */
-    public function getSection(): Collection
+    public function getAttendance(): Collection
     {
-        return $this->section;
+        return $this->attendance;
     }
 
-    public function addSection(Section $section): self
+    public function addAttendance(Attendance $attendance): self
     {
-        if (!$this->section->contains($section)) {
-            $this->section[] = $section;
+        if (!$this->attendance->contains($attendance)) {
+            $this->attendance[] = $attendance;
+            $attendance->setStudent($this);
         }
 
         return $this;
     }
 
-    public function removeSection(Section $section): self
+    public function removeAttendance(Attendance $attendance): self
     {
-        if ($this->section->contains($section)) {
-            $this->section->removeElement($section);
+        if ($this->attendance->contains($attendance)) {
+            $this->attendance->removeElement($attendance);
+            // set the owning side to null (unless already changed)
+            if ($attendance->getStudent() === $this) {
+                $attendance->setStudent(null);
+            }
         }
+
+        return $this;
+    }
+
+    public function getSection(): ?Section
+    {
+        return $this->section;
+    }
+
+    public function setSection(?Section $section): self
+    {
+        $this->section = $section;
 
         return $this;
     }
@@ -439,7 +450,7 @@ class Student implements UserInterface
     {
         if (!$this->grades->contains($grade)) {
             $this->grades[] = $grade;
-            $grade->setSubject($this);
+            $grade->setStudent($this);
         }
 
         return $this;
@@ -450,17 +461,10 @@ class Student implements UserInterface
         if ($this->grades->contains($grade)) {
             $this->grades->removeElement($grade);
             // set the owning side to null (unless already changed)
-            if ($grade->getSubject() === $this) {
-                $grade->setSubject(null);
+            if ($grade->getStudent() === $this) {
+                $grade->setStudent(null);
             }
         }
-
-        return $this;
-    }
-
-    public function setSection(?Section $section): self
-    {
-        $this->section = $section;
 
         return $this;
     }

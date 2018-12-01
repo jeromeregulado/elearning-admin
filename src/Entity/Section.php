@@ -120,7 +120,7 @@ class Section
     {
         if (!$this->student->contains($student)) {
             $this->student[] = $student;
-            $student->addSection($this);
+            $student->setSection($this);
         }
 
         return $this;
@@ -130,7 +130,10 @@ class Section
     {
         if ($this->student->contains($student)) {
             $this->student->removeElement($student);
-            $student->removeSection($this);
+            // set the owning side to null (unless already changed)
+            if ($student->getSection() === $this) {
+                $student->setSection(null);
+            }
         }
 
         return $this;
@@ -163,13 +166,6 @@ class Section
                 $advisory->setSection(null);
             }
         }
-
-        return $this;
-    }
-
-    public function setStudent(?Student $student): self
-    {
-        $this->student = $student;
 
         return $this;
     }

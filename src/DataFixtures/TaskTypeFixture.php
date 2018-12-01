@@ -8,11 +8,11 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\Task;
+use App\Entity\TaskType;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
-class TaskFixture extends Fixture
+class TaskTypeFixture extends Fixture
 {
     /**
      * Load data fixtures with the passed EntityManager
@@ -21,25 +21,25 @@ class TaskFixture extends Fixture
      */
     public function load(ObjectManager $manager)
     {
-        $task = new Task();
+        $task = new TaskType();
         $task->setName("Homework")
             ->setIsActive(1);
         $manager->persist($task);
         $manager->flush();
 
-        $task = new Task();
+        $task = new TaskType();
         $task->setName("Activity")
             ->setIsActive(1);
         $manager->persist($task);
         $manager->flush();
 
-        $task = new Task();
+        $task = new TaskType();
         $task->setName("Quiz")
             ->setIsActive(1);
         $manager->persist($task);
         $manager->flush();
 
-        $task = new Task();
+        $task = new TaskType();
         $task->setName("Exam")
             ->setIsActive(1);
         $manager->persist($task);

@@ -6,13 +6,11 @@
  * Time: 4:33 PM
  */
 
-namespace App\Controller;
+namespace App\Controller\EasyAdmin;
 
 use AlterPHP\EasyAdminExtensionBundle\Controller\AdminController;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class StudentController extends  AdminController

@@ -37,8 +37,8 @@ class Grades
     protected $teacher;
 
     /**
-     * @var \App\Entity\Task
-     * @ORM\ManyToOne(targetEntity="App\Entity\Task", inversedBy="grades")
+     * @var \App\Entity\TaskType
+     * @ORM\ManyToOne(targetEntity="App\Entity\TaskType", inversedBy="grades")
      */
     protected $task;
 
@@ -49,10 +49,21 @@ class Grades
     protected $subject;
 
     /**
+     * @var integer
+     * @ORM\Column(name="grade", type="integer")
+     */
+    protected $grade;
+
+    /**
      * @var date
      * @ORM\Column(name="date", type="date")
      */
     protected $date;
+
+    public function __toString()
+    {
+        return (string) $this->grade;
+    }
 
     public function getId(): ?int
     {
@@ -95,12 +106,12 @@ class Grades
         return $this;
     }
 
-    public function getTask(): ?Task
+    public function getTask(): ?TaskType
     {
         return $this->task;
     }
 
-    public function setTask(?Task $task): self
+    public function setTask(?TaskType $task): self
     {
         $this->task = $task;
 
@@ -115,6 +126,18 @@ class Grades
     public function setSubject(?Subject $subject): self
     {
         $this->subject = $subject;
+
+        return $this;
+    }
+
+    public function getGrade(): ?int
+    {
+        return $this->grade;
+    }
+
+    public function setGrade(int $grade): self
+    {
+        $this->grade = $grade;
 
         return $this;
     }
