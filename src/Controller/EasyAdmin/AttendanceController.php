@@ -9,6 +9,12 @@
 namespace App\Controller\EasyAdmin;
 
 use AlterPHP\EasyAdminExtensionBundle\Controller\AdminController;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Doctrine\ORM\EntityRepository;
+use App\Entity\Student;
 
 class AttendanceController extends AdminController
 {
@@ -20,6 +26,10 @@ class AttendanceController extends AdminController
      */
     protected function prePersistEntity($entity)
     {
+        $teacher = $this->getUser();
+
+        $entity
+            ->setTeacher($teacher);
         return parent::prePersistEntity($entity);
     }
 
@@ -44,7 +54,45 @@ class AttendanceController extends AdminController
      */
     protected function createAttendanceEntityFormBuilder($entity, $view)
     {
+        $teacher = $this->getUser();
         $builder = parent::createEntityFormBuilder($entity, $view);
+
+        $builder->remove('teacher');
+
+        $builder
+            ->add('status', ChoiceType::class, [
+                'choices' => [
+                    'P - Present' => 'present',
+                    'A - Absent' => 'absent',
+                    'E - Excuse' => 'excuse',
+                    'O - Others' => 'others'
+                ],
+                'required' => true,
+                'attr' => [
+                    'data-widget' => 'select2'
+                ]
+            ])
+            ->add('remarks', TextareaType::class, [
+                'required' => false
+            ])
+            ->add('student', EntityType::class, [
+                'class' => Student::class,
+                'query_builder' => function (EntityRepository $repository) use ($teacher) {
+                    return $repository->createQueryBuilder('s')
+                        ->where('s.teacher = :teacher')
+                        ->setParameter('teacher', $teacher);
+                },
+                'attr' => [
+                    'data-widget' => 'select2'
+                ]
+            ])
+            ->add('date', DateType::class, [
+                'label' => 'Date',
+                'years' => range(date('Y'), date('Y')),
+                'months' => range(1, 12),
+                'days' => range(1, 31),
+            ])
+        ;
         return $builder;
     }
 

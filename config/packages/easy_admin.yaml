@@ -1,11 +1,11 @@
 easy_admin:
   design:
     menu:
-      - { label: 'Calendar', children: [ { entity: 'Event', label: 'List Events', roles: ['ROLE_TEACHER', 'ROLE_ADMIN'] }, { label: 'Calendar', url: '/event/1', target: '_blank' } ] }
-      - { entity: 'Student', roles: ['ROLE_TEACHER', 'ROLE_ADMIN'] }
-#      - { entity: 'Teacher', role: ROLE_ADMIN }
-      - { entity: 'Advisory', role: ROLE_ADMIN }
-      - { entity: 'Grades', label: 'Grades', role: ROLE_TEACHER }
+      - { label: 'School Calendar', children: [ { entity: 'Event', label: 'List Events', roles: ['ROLE_TEACHER', 'ROLE_ADMIN'] }, { label: 'Calendar', url: '/event/1', target: '_blank' } ] }
+      - { label: 'Student', children: [ { entity: 'Student', label: 'List Student', roles: ['ROLE_TEACHER', 'ROLE_ADMIN'] }, { entity: 'Grades', label: 'Grades', role: ROLE_TEACHER } ] }
+      - { entity: 'Teacher', role: ROLE_ADMIN }
+#      - { entity: 'Advisory', role: ROLE_ADMIN }
+#      - { entity: 'Grades', label: 'Grades', role: ROLE_TEACHER }
       - { entity: 'Homework', role: ROLE_TEACHER }
       - { entity: 'Lesson', role: ROLE_TEACHER }
       - { entity: 'Attendance', role: ROLE_TEACHER }
@@ -15,6 +15,8 @@ easy_admin:
       roles: ['ROLE_TEACHER', 'ROLE_ADMIN']
       class: App\Entity\Event
       controller: App\Controller\EasyAdmin\EventController
+      list:
+        fields: ['title', 'type', 'dateStart', 'dateEnd']
 
     Teacher:
       role: ROLE_ADMIN
@@ -35,17 +37,22 @@ easy_admin:
       edit:
         actions: ['-delete']
 
-    Advisory:
-      role: ROLE_ADMIN
-      class: App\Entity\Advisory
-      list:
-        fields: ['id', 'section', 'teacher', 'subject']
+#    Advisory:
+#      role: ROLE_ADMIN
+#      class: App\Entity\Advisory
+#      list:
+#        fields: ['id', 'section', 'teacher', 'subject']
+#      new:
+#        fields: ['section', 'teacher', 'subject']
+#      edit:
+#        fields: ['section', 'teacher', 'subject']
 
     Grades:
       actions: ['-delete']
       class: App\Entity\Grades
+      controller: App\Controller\EasyAdmin\GradesController
       list:
-        fields: ['subject', 'teacher', 'task', 'grade']
+        fields: ['subject', 'student', 'task', 'grade']
       edit:
         role: ROLE_TEACHER
       delete:
@@ -69,8 +76,8 @@ easy_admin:
         actions: ['new', 'edit', 'search', 'show', '-delete']
         fields:
           - { property: 'uuid', label: 'ID' }
-          - { property: 'firstName', label: 'First Name' }
-          - { property: 'lastName', label: 'Last Name' }
+          - { property: 'fullName' }
+          - { property: 'section' }
           - { property: 'birthday', label: 'Birthday' }
       new:
         role: ROLE_TEACHER
@@ -85,13 +92,27 @@ easy_admin:
           - { property: 'guardianContact' }
           - { type: 'section' }
           - { property: 'section', type_options: { required: true } }
+          - { property: 'teacher', type_options: { required: true } }
       edit:
         role: ROLE_TEACHER
         actions: ['-delete']
+        fields:
+          - { property: 'firstName' }
+          - { property: 'middleName' }
+          - { property: 'lastName' }
+          - { property: 'birthday' }
+          - { property: 'address' }
+          - { type: 'section' }
+          - { property: 'guardian' }
+          - { property: 'guardianContact' }
+          - { type: 'section' }
+          - { property: 'section', type_options: { required: true } }
+          - { property: 'grades', label: '', type: 'embedded_list' }
 
     Homework:
       role: ROLE_TEACHER
       class: App\Entity\Homework
+      controller: App\Controller\EasyAdmin\HomeworkController
 
     Lesson:
       role: ROLE_TEACHER
@@ -104,3 +125,4 @@ easy_admin:
     Attendance:
       role: ROLE_TEACHER
       class: App\Entity\Attendance
+      controller: App\Controller\EasyAdmin\AttendanceController

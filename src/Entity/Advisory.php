@@ -12,11 +12,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Class Advisory
- * @package App\Entity
- * @ORM\Entity(repositoryClass="App\Repository\AdvisoryRepository")
- */
+///**
+// * Class Advisory
+// * @package App\Entity
+// * @ORM\Entity(repositoryClass="App\Repository\AdvisoryRepository")
+// */
 class Advisory
 {
     /**

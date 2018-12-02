@@ -50,11 +50,11 @@ class Section
      */
     private $academicYear;
 
-    /**
-     * @var \App\Entity\Advisory
-     * @ORM\OneToMany(targetEntity="App\Entity\Advisory", mappedBy="section")
-     */
-    private $advisory;
+//    /**
+//     * @var \App\Entity\Advisory
+//     * @ORM\OneToMany(targetEntity="App\Entity\Advisory", mappedBy="section")
+//     */
+//    private $advisory;
 
     public function __construct()
     {

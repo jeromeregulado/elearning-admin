@@ -88,11 +88,11 @@ class User implements UserInterface
      */
     protected $attendance;
 
-    /**
-     * @var \App\Entity\Advisory
-     * @ORM\OneToMany(targetEntity="App\Entity\Advisory", mappedBy="teacher")
-     */
-    protected $advisory;
+//    /**
+//     * @var \App\Entity\Advisory
+//     * @ORM\OneToMany(targetEntity="App\Entity\Advisory", mappedBy="teacher")
+//     */
+//    protected $advisory;
 
     /**
      * @var \App\Entity\Lesson
@@ -118,6 +118,12 @@ class User implements UserInterface
      */
     protected $grades;
 
+    /**
+     * @var \App\Entity\Student
+     * @ORM\OneToMany(targetEntity="App\Entity\Student", mappedBy="teacher")
+     */
+    protected $student;
+
     public function __construct()
     {
         $this->attendance = new ArrayCollection();
@@ -126,6 +132,7 @@ class User implements UserInterface
         $this->message = new ArrayCollection();
         $this->activity = new ArrayCollection();
         $this->grades = new ArrayCollection();
+        $this->student = new ArrayCollection();
     }
 
     public function __toString()
@@ -499,6 +506,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($grade->getSubject() === $this) {
                 $grade->setSubject(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Student[]
+     */
+    public function getStudent(): Collection
+    {
+        return $this->student;
+    }
+
+    public function addStudent(Student $student): self
+    {
+        if (!$this->student->contains($student)) {
+            $this->student[] = $student;
+            $student->setTeacher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStudent(Student $student): self
+    {
+        if ($this->student->contains($student)) {
+            $this->student->removeElement($student);
+            // set the owning side to null (unless already changed)
+            if ($student->getTeacher() === $this) {
+                $student->setTeacher(null);
             }
         }
 

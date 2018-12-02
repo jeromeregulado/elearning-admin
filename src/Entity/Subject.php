@@ -38,11 +38,11 @@ class Subject
      */
     protected $isActive;
 
-    /**
-     * @var \App\Entity\Advisory
-     * @ORM\OneToMany(targetEntity="App\Entity\Advisory", mappedBy="subject")
-     */
-    protected $advisory;
+//    /**
+//     * @var \App\Entity\Advisory
+//     * @ORM\OneToMany(targetEntity="App\Entity\Advisory", mappedBy="subject")
+//     */
+//    protected $advisory;
 
     /**
      * @var \App\Entity\Lesson

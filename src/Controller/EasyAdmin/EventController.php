@@ -40,11 +40,13 @@ class EventController extends AdminController
 
         $builder
             ->add('dateStart', DateType::class, [
+                'label' => 'Start',
                 'years' => range(date('Y'), date('Y') + 1),
                 'months' => range(1, 12),
                 'days' => range(1, 31),
             ])
             ->add('dateEnd', DateType::class, [
+                'label' => 'End',
                 'years' => range(date('Y'), date('Y') + 1),
                 'months' => range(1, 12),
                 'days' => range(1, 31),

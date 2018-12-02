@@ -63,10 +63,13 @@ class StudentController extends  AdminController
      */
     protected function createListQueryBuilder($entityClass, $sortDirection, $sortField = null, $dqlFilter = null)
     {
+        $user = $this->getUser();
         $qb = parent::createListQueryBuilder($entityClass, $sortDirection, $sortField, $dqlFilter);
 
-        $qb->where('entity.roles LIKE :roles')
-            ->setParameter('roles', '%"ROLE_STUDENT"%')
+        if ($user->getUserName() == 'admin') return $qb;
+
+        $qb->where('entity.teacher = :teacher')
+            ->setParameter('teacher', $user)
             ->addOrderBy('entity.id', 'DESC')
         ;
 

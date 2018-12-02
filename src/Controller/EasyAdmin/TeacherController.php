@@ -10,12 +10,16 @@ namespace App\Controller\EasyAdmin;
 
 use AlterPHP\EasyAdminExtensionBundle\Controller\AdminController;
 use Doctrine\ORM\QueryBuilder;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class TeacherController extends AdminController
 {
+    private $encoder;
+    public function __construct(UserPasswordEncoderInterface $encoder)
+    {
+        $this->encoder = $encoder;
+    }
+
     /**
      * Allows applications to modify the entity associated with the item being
      * created before persisting it.

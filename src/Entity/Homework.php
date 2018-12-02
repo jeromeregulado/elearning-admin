@@ -24,11 +24,11 @@ class Homework
      */
     protected $id;
 
-    /**
-     * @var \App\Entity\Homework
-     * @ORM\ManyToOne(targetEntity="App\Entity\Advisory", inversedBy="homework")
-     */
-    protected $advisory;
+//    /**
+//     * @var \App\Entity\Homework
+//     * @ORM\ManyToOne(targetEntity="App\Entity\Advisory", inversedBy="homework")
+//     */
+//    protected $advisory;
 
     /**
      * @var string

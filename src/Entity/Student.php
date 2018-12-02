@@ -120,6 +120,12 @@ class Student implements UserInterface
      */
     protected $grades;
 
+    /**
+     * @var \App\Entity\User
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="student")
+     */
+    protected $teacher;
+
     public function __construct()
     {
         $this->attendance = new ArrayCollection();
@@ -465,6 +471,18 @@ class Student implements UserInterface
                 $grade->setStudent(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTeacher(): ?User
+    {
+        return $this->teacher;
+    }
+
+    public function setTeacher(?User $teacher): self
+    {
+        $this->teacher = $teacher;
 
         return $this;
     }
