@@ -10,11 +10,11 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Class Homework
- * @package App\Entity\Homework
- * @ORM\Entity(repositoryClass="App\Repository\HomeworkRepository")
- */
+///**
+// * Class Homework
+// * @package App\Entity\Homework
+// * @ORM\Entity(repositoryClass="App\Repository\HomeworkRepository")
+// */
 class Homework
 {
     /**
@@ -23,12 +23,6 @@ class Homework
      * @ORM\Column(type="integer")
      */
     protected $id;
-
-//    /**
-//     * @var \App\Entity\Homework
-//     * @ORM\ManyToOne(targetEntity="App\Entity\Advisory", inversedBy="homework")
-//     */
-//    protected $advisory;
 
     /**
      * @var string
@@ -53,6 +47,12 @@ class Homework
      * @ORM\Column(name="created_at", type="datetime")
      */
     protected $createdAt;
+
+    public function __construct()
+    {
+        $this->submissionDate = new \DateTime();
+        $this->createdAt = new \DateTime();
+    }
 
     public function getId(): ?int
     {

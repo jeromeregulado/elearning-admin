@@ -17,112 +17,112 @@ class User implements UserInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    protected $uuid;
+    private $uuid;
 
     /**
      * @ORM\Column(type="json")
      */
-    protected $roles = [];
+    private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    protected $password;
+    private $password;
 
     /**
      * @var string Plain password
      */
-    protected $plainPassword;
+    private $plainPassword;
 
     /**
      * @var string
      * @ORM\Column(name="first_name", type="string")
      */
-    protected $firstName;
+    private $firstName;
 
     /**
      * @var string
      * @ORM\Column(name="middle_name", type="string", nullable=true)
      */
-    protected $middleName;
+    private $middleName;
 
     /**
      * @var string
      * @ORM\Column(name="last_name", type="string")
      */
-    protected $lastName;
+    private $lastName;
 
     /**
      * @var bool
      * @ORM\Column(name="is_active", type="boolean")
      */
-    protected $isActive;
+    private $isActive;
 
     /**
      * @var string
      * @ORM\Column(name="email", type="string", nullable=true)
      */
-    protected $email;
+    private $email;
 
     /**
      * @var string
      * @ORM\Column(name="mobile_number", type="string", nullable=true)
      */
-    protected $mobileNumber;
+    private $mobileNumber;
 
     /**
      * @var text
      * @ORM\Column(name="address", type="text")
      */
-    protected $address;
+    private $address;
 
     /**
      * @var \App\Entity\Attendance
      * @ORM\OneToMany(targetEntity="App\Entity\Attendance", mappedBy="teacher")
      */
-    protected $attendance;
-
-//    /**
-//     * @var \App\Entity\Advisory
-//     * @ORM\OneToMany(targetEntity="App\Entity\Advisory", mappedBy="teacher")
-//     */
-//    protected $advisory;
+    private $attendance;
 
     /**
      * @var \App\Entity\Lesson
      * @ORM\OneToMany(targetEntity="App\Entity\Lesson", mappedBy="teacher")
      */
-    protected $lesson;
+    private $lesson;
 
     /**
      * @var \App\Entity\Message
      * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="teacher")
      */
-    protected $message;
+    private $message;
 
     /**
      * @var \App\Entity\Activity
      * @ORM\OneToMany(targetEntity="App\Entity\Activity", mappedBy="teacher")
      */
-    protected $activity;
+    private $activity;
 
     /**
      * @var \App\Entity\Grades
      * @ORM\OneToMany(targetEntity="App\Entity\Grades", mappedBy="teacher")
      */
-    protected $grades;
+    private $grades;
 
     /**
      * @var \App\Entity\Student
      * @ORM\OneToMany(targetEntity="App\Entity\Student", mappedBy="teacher")
      */
-    protected $student;
+    private $student;
+
+    /**
+     * @var \App\Entity\Event
+     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="teacher")
+     */
+    private $event;
 
     public function __construct()
     {
@@ -133,6 +133,7 @@ class User implements UserInterface
         $this->activity = new ArrayCollection();
         $this->grades = new ArrayCollection();
         $this->student = new ArrayCollection();
+        $this->event = new ArrayCollection();
     }
 
     public function __toString()
@@ -537,6 +538,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($student->getTeacher() === $this) {
                 $student->setTeacher(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Event[]
+     */
+    public function getEvent(): Collection
+    {
+        return $this->event;
+    }
+
+    public function addEvent(Event $event): self
+    {
+        if (!$this->event->contains($event)) {
+            $this->event[] = $event;
+            $event->setTeacher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvent(Event $event): self
+    {
+        if ($this->event->contains($event)) {
+            $this->event->removeElement($event);
+            // set the owning side to null (unless already changed)
+            if ($event->getTeacher() === $this) {
+                $event->setTeacher(null);
             }
         }
 

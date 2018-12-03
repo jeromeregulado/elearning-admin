@@ -9,6 +9,7 @@
 namespace App\Controller\EasyAdmin;
 
 use AlterPHP\EasyAdminExtensionBundle\Controller\AdminController;
+use AlterPHP\EasyAdminExtensionBundle\Form\Type\EasyAdminEmbeddedListType;
 use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -84,11 +85,18 @@ class TeacherController extends AdminController
     {
         $builder = parent::createEntityFormBuilder($entity, $view);
 
-        $builder->remove('attendance')
-            ->remove('advisory')
+        $builder
+            ->remove('attendance')
             ->remove('isActive')
             ->remove('uuid')
+            ->remove('message')
+            ->remove('activity')
+            ->remove('grades')
+            ->remove('event')
         ;
+
+        $builder->add('lesson', EasyAdminEmbeddedListType::class);
+        $builder->add('student', EasyAdminEmbeddedListType::class);
 
         return $builder;
     }

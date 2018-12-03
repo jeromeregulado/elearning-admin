@@ -8,6 +8,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -31,6 +33,18 @@ class Event
     private $type;
 
     /**
+     * @var \App\Entity\Student
+     * @ORM\ManyToMany(targetEntity="App\Entity\Student", inversedBy="event")
+     */
+    private $student;
+
+    /**
+     * @var \App\Entity\User
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="event")
+     */
+    private $teacher;
+
+    /**
      * @var date
      * @ORM\Column(name="date_start", type="date")
      */
@@ -50,9 +64,20 @@ class Event
 
     /**
      * @var text
-     * @ORM\Column(name="remarks", type="text", nullable=true)
+     * @ORM\Column(name="description", type="text", nullable=true)
      */
-    private $remarks;
+    private $description;
+
+    public function __construct()
+    {
+        $this->dateStart = new \DateTime();
+        $this->student = new ArrayCollection();
+    }
+
+    public function __toString()
+    {
+        return (string) $this->title;
+    }
 
     public function getId(): ?int
     {
@@ -115,6 +140,56 @@ class Event
     public function setRemarks(?string $remarks): self
     {
         $this->remarks = $remarks;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Student[]
+     */
+    public function getStudent(): Collection
+    {
+        return $this->student;
+    }
+
+    public function addStudent(Student $student): self
+    {
+        if (!$this->student->contains($student)) {
+            $this->student[] = $student;
+        }
+
+        return $this;
+    }
+
+    public function removeStudent(Student $student): self
+    {
+        if ($this->student->contains($student)) {
+            $this->student->removeElement($student);
+        }
+
+        return $this;
+    }
+
+    public function getTeacher(): ?User
+    {
+        return $this->teacher;
+    }
+
+    public function setTeacher(?User $teacher): self
+    {
+        $this->teacher = $teacher;
 
         return $this;
     }

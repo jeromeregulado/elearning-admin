@@ -2,5 +2,12 @@ vich_uploader:
     db_driver: orm
     mappings:
         lessons:
-            uri_prefix: /file/lessons
-            upload_destination: '%kernel.project_dir%/public/files'
+            uri_prefix: /files/lesson
+            upload_destination: '%kernel.project_dir%/public/files/lessons'
+            delete_on_update: true
+            delete_on_remove: true
+        activities:
+            uri_prefix: /files/activities
+            upload_destination: '%kernel.project_dir%/public/files/activities'
+            delete_on_update: true
+            delete_on_remove: true

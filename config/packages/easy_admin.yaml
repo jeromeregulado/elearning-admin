@@ -1,12 +1,12 @@
 easy_admin:
   design:
     menu:
-      - { label: 'School Calendar', children: [ { entity: 'Event', label: 'List Events', roles: ['ROLE_TEACHER', 'ROLE_ADMIN'] }, { label: 'Calendar', url: '/event/1', target: '_blank' } ] }
-      - { label: 'Student', children: [ { entity: 'Student', label: 'List Student', roles: ['ROLE_TEACHER', 'ROLE_ADMIN'] }, { entity: 'Grades', label: 'Grades', role: ROLE_TEACHER } ] }
+      - { label: 'School Calendar', children: [ { entity: 'Event', label: 'List View', roles: ['ROLE_TEACHER', 'ROLE_ADMIN'] }, { label: 'Calendar View', url: '/event/1', target: '_blank' } ] }
+      - { label: 'Student', children: [ { entity: 'Student', label: 'Student list', roles: ['ROLE_TEACHER', 'ROLE_ADMIN'] }, { entity: 'Grades', label: 'Grades list', role: ROLE_TEACHER } ] }
       - { entity: 'Teacher', role: ROLE_ADMIN }
 #      - { entity: 'Advisory', role: ROLE_ADMIN }
 #      - { entity: 'Grades', label: 'Grades', role: ROLE_TEACHER }
-      - { entity: 'Homework', role: ROLE_TEACHER }
+#      - { entity: 'Homework', role: ROLE_TEACHER }
       - { entity: 'Lesson', role: ROLE_TEACHER }
       - { entity: 'Attendance', role: ROLE_TEACHER }
       - { entity: 'Activity', role: ROLE_TEACHER }
@@ -65,6 +65,7 @@ easy_admin:
       search:
         fields: ['uuid', 'firstName', 'lastName']
       show:
+        actions: ['-delete']
         fields:
           - { property: 'uuid', label: 'Student ID:' }
           - { property: 'fullName' }
@@ -109,18 +110,33 @@ easy_admin:
           - { property: 'section', type_options: { required: true } }
           - { property: 'grades', label: '', type: 'embedded_list' }
 
-    Homework:
-      role: ROLE_TEACHER
-      class: App\Entity\Homework
-      controller: App\Controller\EasyAdmin\HomeworkController
+#    Homework:
+#      role: ROLE_TEACHER
+#      class: App\Entity\Homework
+#      controller: App\Controller\EasyAdmin\HomeworkController
 
     Lesson:
-      role: ROLE_TEACHER
+      roles: ['ROLE_TEACHER', 'ROLE_ADMIN']
       class: App\Entity\Lesson
+      controller: App\Controller\EasyAdmin\LessonController
+      list:
+        roles: ['ROLE_TEACHER', 'ROLE_ADMIN']
+        fields:
+          - id
+          - { property: 'fileName', label: 'File', template: 'file/lesson.html.twig', base_path: 'http://localhost/files/lessons' }
+          - subject
+          - date
 
     Activity:
       role: ROLE_TEACHER
       class: App\Entity\Activity
+      controller: App\Controller\EasyAdmin\ActivityController
+      list:
+        fields:
+          - id
+          - { property: 'fileName', label: 'Image', type: 'image', base_path: 'http://localhost/files/activities' }
+          - student
+          - date
 
     Attendance:
       role: ROLE_TEACHER

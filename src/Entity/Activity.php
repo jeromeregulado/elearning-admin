@@ -25,43 +25,53 @@ class Activity
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    protected $id;
+    private $id;
 
     /**
      * @var \App\Entity\Student
      * @ORM\ManyToOne(targetEntity="App\Entity\Student", inversedBy="activity")
      */
-    protected $student;
+    private $student;
 
     /**
      * @var \App\Entity\User
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="activity")
      */
-    protected $teacher;
+    private $teacher;
 
     /**
      * @var date
      * @ORM\Column(name="date", type="date")
      */
-    protected $date;
+    private $date;
 
     /**
      * @var string
      * @ORM\Column(name="file_name", type="string")
      */
-    protected $fileName;
+    private $fileName;
 
     /**
      * @var File
-     * @Vich\UploadableField(mapping="lessons", fileNameProperty="fileName")
+     * @Vich\UploadableField(mapping="activities", fileNameProperty="fileName")
      */
-    protected $file;
+    private $file;
 
     /**
      * @var datetime
      * @ORM\Column(name="updated_at", type="datetime")
      */
-    protected $updatedAt;
+    private $updatedAt;
+    
+    public function __construct()
+    {
+        $this->date = new \DateTime();
+    }
+
+    public function __toString()
+    {
+        return (string) $this->fileName;
+    }
 
     public function getId(): ?int
     {
@@ -126,5 +136,19 @@ class Activity
         $this->teacher = $teacher;
 
         return $this;
+    }
+
+    public function setFile(?File $file = null): void
+    {
+        $this->file = $file;
+
+        if (null !== $file) {
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getFile(): ?File
+    {
+        return $this->file;
     }
 }

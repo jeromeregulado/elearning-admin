@@ -110,7 +110,7 @@ class StudentController extends  AdminController
             ])
             ->add('birthday', DateType::class, [
                 'label' => 'Birthday:',
-                'years' => range(date('Y')-10, date('Y')-20),
+                'years' => range(date('Y')-4, date('Y')-8),
                 'months' => range(1, 12),
                 'days' => range(1, 31),
             ])

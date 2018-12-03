@@ -19,112 +19,118 @@ class Student implements UserInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    protected $uuid;
+    private $uuid;
 
     /**
      * @ORM\Column(type="json")
      */
-    protected $roles = [];
+    private $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    protected $password;
+    private $password;
 
     /**
      * @var string Plain password
      */
-    protected $plainPassword;
+    private $plainPassword;
 
     /**
      * @var string
      * @ORM\Column(name="first_name", type="string")
      */
-    protected $firstName;
+    private $firstName;
 
     /**
      * @var string
      * @ORM\Column(name="middle_name", type="string", nullable=true)
      */
-    protected $middleName;
+    private $middleName;
 
     /**
      * @var string
      * @ORM\Column(name="last_name", type="string")
      */
-    protected $lastName;
+    private $lastName;
 
     /**
      * @var bool
      * @ORM\Column(name="is_active", type="boolean")
      */
-    protected $isActive;
+    private $isActive;
 
     /**
      * @var datetime
      * @ORM\Column(name="birthday", type="date")
      */
-    protected $birthday;
+    private $birthday;
 
     /**
      * @var longtext
      * @ORM\Column(name="address", type="text")
      */
-    protected $address;
+    private $address;
 
     /**
      * @var string
      * @ORM\Column(name="guardian", type="string", nullable=true)
      */
-    protected $guardian;
+    private $guardian;
 
     /**
      * @var string
      * @ORM\Column(name="guardian_contact", type="string", nullable=true)
      */
-    protected $guardianContact;
+    private $guardianContact;
 
     /**
      * @var \App\Entity\Attendance
      * @ORM\OneToMany(targetEntity="App\Entity\Attendance", mappedBy="student")
      */
-    protected $attendance;
+    private $attendance;
 
     /**
      * @var \App\Entity\Section
      * @ORM\ManyToOne(targetEntity="App\Entity\Section", inversedBy="student")
      */
-    protected $section;
+    private $section;
 
     /**
      * @var \App\Entity\Message
      * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="student")
      */
-    protected $message;
+    private $message;
 
     /**
      * @var \App\Entity\Activity
      * @ORM\OneToMany(targetEntity="App\Entity\Activity", mappedBy="student")
      */
-    protected $activity;
+    private $activity;
 
     /**
      * @var \App\Entity\Grades
      * @ORM\OneToMany(targetEntity="App\Entity\Grades", mappedBy="student")
      */
-    protected $grades;
+    private $grades;
 
     /**
      * @var \App\Entity\User
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="student")
      */
-    protected $teacher;
+    private $teacher;
+
+    /**
+     * @var \App\Entity\Event
+     * @ORM\ManyToMany(targetEntity="App\Entity\Event", mappedBy="student")
+     */
+    private $event;
 
     public function __construct()
     {
@@ -132,6 +138,7 @@ class Student implements UserInterface
         $this->message = new ArrayCollection();
         $this->activity = new ArrayCollection();
         $this->grades = new ArrayCollection();
+        $this->event = new ArrayCollection();
     }
 
     public function __toString()
@@ -483,6 +490,37 @@ class Student implements UserInterface
     public function setTeacher(?User $teacher): self
     {
         $this->teacher = $teacher;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Event[]
+     */
+    public function getEvent(): Collection
+    {
+        return $this->event;
+    }
+
+    public function addEvent(Event $event): self
+    {
+        if (!$this->event->contains($event)) {
+            $this->event[] = $event;
+            $event->setStudent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvent(Event $event): self
+    {
+        if ($this->event->contains($event)) {
+            $this->event->removeElement($event);
+            // set the owning side to null (unless already changed)
+            if ($event->getStudent() === $this) {
+                $event->setStudent(null);
+            }
+        }
 
         return $this;
     }

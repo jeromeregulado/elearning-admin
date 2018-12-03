@@ -9,6 +9,9 @@
 namespace App\Controller\EasyAdmin;
 
 use AlterPHP\EasyAdminExtensionBundle\Controller\AdminController;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class HomeworkController extends AdminController
 {
@@ -36,6 +39,19 @@ class HomeworkController extends AdminController
         $builder = parent::createEntityFormBuilder($entity, $view);
 
         $builder->remove('createdAt');
+
+        $builder
+            ->add('title', TextType::class)
+            ->add('description', TextareaType::class, [
+                'required' => false
+            ])
+            ->add('submissionDate',DateType::class, [
+                'label' => 'Submission Date',
+                'years' => range(date('Y'), date('Y')),
+                'months' => range(1, 12),
+                'days' => range(1, 31),
+            ])
+        ;
 
         return $builder;
     }

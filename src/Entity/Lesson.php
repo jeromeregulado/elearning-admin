@@ -63,6 +63,16 @@ class Lesson
      */
     protected $updatedAt;
 
+    public function __construct()
+    {
+        $this->date = new \DateTime();
+    }
+
+    public function __toString()
+    {
+        return (string) $this->fileName;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -136,7 +146,6 @@ class Lesson
             $this->updatedAt = new \DateTimeImmutable();
         }
     }
-
 
     public function getFile(): ?File
     {
