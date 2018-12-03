@@ -15,3 +15,5 @@
 /.web-server-pid
 ###< symfony/web-server-bundle ###
 .idea
+/public/files/lessons/
+/public/files/activities/
