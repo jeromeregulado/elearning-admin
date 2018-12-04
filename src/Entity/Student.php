@@ -2,15 +2,20 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use phpDocumentor\Reflection\Types\Context;
 use Symfony\Component\Security\Core\User\UserInterface;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\StudentRepository")
  * @ORM\Table(name="user_student")
+ * @ApiResource(
+ *     collectionOperations={"get"},
+ *     itemOperations={"get"}
+ * )
  */
 class Student implements UserInterface
 {
@@ -93,6 +98,7 @@ class Student implements UserInterface
     /**
      * @var \App\Entity\Attendance
      * @ORM\OneToMany(targetEntity="App\Entity\Attendance", mappedBy="student")
+     * @ApiSubresource()
      */
     private $attendance;
 
@@ -129,6 +135,7 @@ class Student implements UserInterface
     /**
      * @var \App\Entity\Event
      * @ORM\ManyToMany(targetEntity="App\Entity\Event", mappedBy="student")
+     * @ApiSubresource()
      */
     private $event;
 

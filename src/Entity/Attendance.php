@@ -9,11 +9,13 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * Class Attendance
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\AttendanceRepository")
+ * @ApiResource()
  */
 class Attendance
 {

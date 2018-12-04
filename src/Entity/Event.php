@@ -11,11 +11,16 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * Class Event
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\EventRepository")
+ * @ApiResource(
+ *     collectionOperations={"get"},
+ *     itemOperations={"get"}
+ * )
  */
 class Event
 {
@@ -43,6 +48,12 @@ class Event
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="event")
      */
     private $teacher;
+
+    /**
+     * @var \App\Entity\Subject
+     * @ORM\ManyToOne(targetEntity="App\Entity\Subject", inversedBy="event")
+     */
+    private $subject;
 
     /**
      * @var date
@@ -132,18 +143,6 @@ class Event
         return $this;
     }
 
-    public function getRemarks(): ?string
-    {
-        return $this->remarks;
-    }
-
-    public function setRemarks(?string $remarks): self
-    {
-        $this->remarks = $remarks;
-
-        return $this;
-    }
-
     public function getDescription(): ?string
     {
         return $this->description;
@@ -190,6 +189,18 @@ class Event
     public function setTeacher(?User $teacher): self
     {
         $this->teacher = $teacher;
+
+        return $this;
+    }
+
+    public function getSubject(): ?Subject
+    {
+        return $this->subject;
+    }
+
+    public function setSubject(?Subject $subject): self
+    {
+        $this->subject = $subject;
 
         return $this;
     }

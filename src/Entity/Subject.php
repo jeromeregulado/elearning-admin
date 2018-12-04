@@ -8,14 +8,20 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * Class Subject
  * @package App\Entity
  * @ORM\Entity(repositoryClass="App\Repository\SubjectRepository")
+ * @ApiResource(
+ *     collectionOperations={"get"},
+ *     itemOperations={"get"}
+ * )
  */
 class Subject
 {
@@ -24,43 +30,45 @@ class Subject
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    protected $id;
+    private $id;
 
     /**
      * @var string
      * @ORM\Column(name="name", type="string")
      */
-    protected $name;
+    private $name;
 
     /**
      * @var boolean
      * @ORM\Column(name="is_active", type="boolean")
      */
-    protected $isActive;
-
-//    /**
-//     * @var \App\Entity\Advisory
-//     * @ORM\OneToMany(targetEntity="App\Entity\Advisory", mappedBy="subject")
-//     */
-//    protected $advisory;
+    private $isActive;
 
     /**
      * @var \App\Entity\Lesson
      * @ORM\OneToMany(targetEntity="App\Entity\Lesson", mappedBy="subject")
+     * @ApiSubresource()
      */
-    protected $lesson;
+    private $lesson;
 
     /**
      * @var \App\Entity\Grades
      * @ORM\OneToMany(targetEntity="App\Entity\Grades", mappedBy="subject")
      */
-    protected $grades;
+    private $grades;
+
+    /**
+     * @var \App\Entity\Event
+     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="subject")
+     */
+    private $event;
 
     public function __construct()
     {
         $this->advisory = new ArrayCollection();
         $this->lesson = new ArrayCollection();
         $this->grades = new ArrayCollection();
+        $this->event = new ArrayCollection();
     }
 
     public function __toString()
@@ -184,6 +192,37 @@ class Subject
             // set the owning side to null (unless already changed)
             if ($grade->getSubject() === $this) {
                 $grade->setSubject(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Event[]
+     */
+    public function getEvent(): Collection
+    {
+        return $this->event;
+    }
+
+    public function addEvent(Event $event): self
+    {
+        if (!$this->event->contains($event)) {
+            $this->event[] = $event;
+            $event->setSubject($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvent(Event $event): self
+    {
+        if ($this->event->contains($event)) {
+            $this->event->removeElement($event);
+            // set the owning side to null (unless already changed)
+            if ($event->getSubject() === $this) {
+                $event->setSubject(null);
             }
         }
 

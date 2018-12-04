@@ -36,9 +36,16 @@ class TaskType
      */
     private $grades;
 
+    /**
+     * @var \App\Entity\Event
+     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="task")
+     */
+    private $event;
+
     public function __construct()
     {
         $this->grades = new ArrayCollection();
+        $this->event = new ArrayCollection();
     }
 
     public function __toString()

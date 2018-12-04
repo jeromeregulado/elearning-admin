@@ -34,7 +34,7 @@ class StudentController extends  AdminController
             ->setUuid(date('Y') . rand(0,500000))
             ->setRoles(['ROLE_STUDENT'])
             ->setIsActive(1)
-            ->setPassword($this->encoder->encodePassword($entity, str_replace('-', '', $entity->getBirthday()->format("yyyy-MM-dd"))))
+            ->setPassword($this->encoder->encodePassword($entity, str_replace('-', '', $entity->getBirthday()->format("Y-m-d"))))
         ;
 
         return parent::prePersistEntity($entity);

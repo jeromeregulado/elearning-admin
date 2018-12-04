@@ -1,3 +1,13 @@
 api_platform:
+    title: 'ELearning API'
+    version: '0.1.0'
+    formats:
+        json:
+            mime_types: ['application/json']
     mapping:
         paths: ['%kernel.project_dir%/src/Entity']
+    swagger:
+        api_keys:
+            apiKey:
+                name: Authorization
+                type: header
