@@ -3,13 +3,14 @@ easy_admin:
     menu:
       - { label: 'School Calendar', children: [ { entity: 'Event', label: 'List View', roles: ['ROLE_TEACHER', 'ROLE_ADMIN'] }, { label: 'Calendar View', url: '/event/1', target: '_blank' } ] }
       - { label: 'Student', children: [ { entity: 'Student', label: 'Student list', roles: ['ROLE_TEACHER', 'ROLE_ADMIN'] }, { entity: 'Grades', label: 'Grades list', role: ROLE_TEACHER } ] }
-      - { entity: 'Teacher', role: ROLE_ADMIN }
+#      - { entity: 'Teacher', roles: [ROLE_ADMIN, ROLE_TEACHER] }
 #      - { entity: 'Advisory', role: ROLE_ADMIN }
 #      - { entity: 'Grades', label: 'Grades', role: ROLE_TEACHER }
 #      - { entity: 'Homework', role: ROLE_TEACHER }
       - { entity: 'Lesson', role: ROLE_TEACHER }
       - { entity: 'Attendance', role: ROLE_TEACHER }
       - { entity: 'Activity', role: ROLE_TEACHER }
+      - { label: 'Settings', children: [ { label: 'Change Password', route: 'teacher_update_password', role: ROLE_TEACHER }, { label: 'Logout', route: 'logout' } ] }
   entities:
     Event:
       roles: ['ROLE_TEACHER', 'ROLE_ADMIN']
@@ -19,7 +20,7 @@ easy_admin:
         fields: ['title', 'type', 'dateStart', 'dateEnd']
 
     Teacher:
-      role: ROLE_ADMIN
+      roles: [ROLE_ADMIN, ROLE_TEACHER]
       disabled_actions: ['show']
       class: App\Entity\User
       controller: App\Controller\EasyAdmin\TeacherController
@@ -36,6 +37,9 @@ easy_admin:
           - { property: 'isActive', label: 'Is Active' }
       edit:
         actions: ['-delete']
+        role: ROLE_TEACHER
+        fields:
+          - { property: 'plainPassword', label: 'Password', type: 'text', type_options: { required: true }, help: 'Type the plain password and system will encrypt it' }
 
 #    Advisory:
 #      role: ROLE_ADMIN

@@ -47,6 +47,10 @@ class TeacherController extends AdminController
      */
     protected function preUpdateEntity($entity)
     {
+        if (!empty($entity->getPlainPassword())) {
+            $entity->setPassword($this->encoder->encodePassword($entity, $entity->getPlainPassword()));
+        }
+
         return parent::preUpdateEntity($entity);
     }
 
@@ -97,6 +101,12 @@ class TeacherController extends AdminController
 
         $builder->add('lesson', EasyAdminEmbeddedListType::class);
         $builder->add('student', EasyAdminEmbeddedListType::class);
+
+        if ($this->request->get('action') == 'edit') {
+            $builder
+                ->remove('lesson')
+                ->remove('student');
+        }
 
         return $builder;
     }

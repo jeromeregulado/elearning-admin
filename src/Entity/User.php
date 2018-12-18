@@ -100,12 +100,6 @@ class User implements UserInterface
     private $lesson;
 
     /**
-     * @var \App\Entity\Message
-     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="teacher")
-     */
-    private $message;
-
-    /**
      * @var \App\Entity\Activity
      * @ORM\OneToMany(targetEntity="App\Entity\Activity", mappedBy="teacher")
      */
@@ -129,16 +123,29 @@ class User implements UserInterface
      */
     private $event;
 
+    /**
+     * @var MessageThread
+     * @ORM\OneToMany(targetEntity="App\Entity\MessageThread", mappedBy="teacher")
+     */
+    private $messageThread;
+
+    /**
+     * @var Message
+     * @ORM\OneToMany(targetEntity="App\Entity\Message", mappedBy="senderTeacher")
+     */
+    private $message;
+
     public function __construct()
     {
         $this->attendance = new ArrayCollection();
-        $this->advisory = new ArrayCollection();
         $this->lesson = new ArrayCollection();
         $this->message = new ArrayCollection();
         $this->activity = new ArrayCollection();
         $this->grades = new ArrayCollection();
         $this->student = new ArrayCollection();
         $this->event = new ArrayCollection();
+        $this->messageThread = new ArrayCollection();
+        $this->senderTeacher = new ArrayCollection();
     }
 
     public function __toString()
@@ -364,37 +371,6 @@ class User implements UserInterface
     }
 
     /**
-     * @return Collection|Advisory[]
-     */
-    public function getAdvisory(): Collection
-    {
-        return $this->advisory;
-    }
-
-    public function addAdvisory(Advisory $advisory): self
-    {
-        if (!$this->advisory->contains($advisory)) {
-            $this->advisory[] = $advisory;
-            $advisory->setTeacher($this);
-        }
-
-        return $this;
-    }
-
-    public function removeAdvisory(Advisory $advisory): self
-    {
-        if ($this->advisory->contains($advisory)) {
-            $this->advisory->removeElement($advisory);
-            // set the owning side to null (unless already changed)
-            if ($advisory->getTeacher() === $this) {
-                $advisory->setTeacher(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
      * @return Collection|Lesson[]
      */
     public function getLesson(): Collection
@@ -419,37 +395,6 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($lesson->getTeacher() === $this) {
                 $lesson->setTeacher(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Message[]
-     */
-    public function getMessage(): Collection
-    {
-        return $this->message;
-    }
-
-    public function addMessage(Message $message): self
-    {
-        if (!$this->message->contains($message)) {
-            $this->message[] = $message;
-            $message->setTeacher($this);
-        }
-
-        return $this;
-    }
-
-    public function removeMessage(Message $message): self
-    {
-        if ($this->message->contains($message)) {
-            $this->message->removeElement($message);
-            // set the owning side to null (unless already changed)
-            if ($message->getTeacher() === $this) {
-                $message->setTeacher(null);
             }
         }
 
@@ -574,6 +519,68 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($event->getTeacher() === $this) {
                 $event->setTeacher(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MessageThread[]
+     */
+    public function getMessageThread(): Collection
+    {
+        return $this->messageThread;
+    }
+
+    public function addMessageThread(MessageThread $messageThread): self
+    {
+        if (!$this->messageThread->contains($messageThread)) {
+            $this->messageThread[] = $messageThread;
+            $messageThread->setTeacher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessageThread(MessageThread $messageThread): self
+    {
+        if ($this->messageThread->contains($messageThread)) {
+            $this->messageThread->removeElement($messageThread);
+            // set the owning side to null (unless already changed)
+            if ($messageThread->getTeacher() === $this) {
+                $messageThread->setTeacher(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getMessage(): Collection
+    {
+        return $this->message;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->message->contains($message)) {
+            $this->message[] = $message;
+            $message->setTeacher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->message->contains($message)) {
+            $this->message->removeElement($message);
+            // set the owning side to null (unless already changed)
+            if ($message->getTeacher() === $this) {
+                $message->setTeacher(null);
             }
         }
 

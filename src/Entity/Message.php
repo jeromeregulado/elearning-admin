@@ -22,31 +22,43 @@ class Message
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    protected $id;
+    private $id;
+
+    /**
+     * @var MessageThread
+     * @ORM\ManyToOne(targetEntity="App\Entity\MessageThread", inversedBy="message")
+     */
+    private $thread;
 
     /**
      * @var \App\Entity\User
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="message")
      */
-    protected $teacher;
+    private $senderTeacher;
 
     /**
-     * @var \App\Entity\Student
+     * @var \App\Entity\Student as Parent
      * @ORM\ManyToOne(targetEntity="App\Entity\Student", inversedBy="message")
      */
-    protected $student;
+    private $senderParent;
 
     /**
      * @var text
      * @ORM\Column(name="message", type="text")
      */
-    protected $message;
+    private $message;
+
+    /**
+     * @var string
+     * @ORM\Column(name="status", type="string", length=255, options={"default": "unread"})
+     */
+    private $status;
 
     /**
      * @var datetime
      * @ORM\Column(name="created_at", type="datetime")
      */
-    protected $createdAt;
+    private $createdAt;
 
     public function getId(): ?int
     {
@@ -97,6 +109,54 @@ class Message
     public function setStudent(?Student $student): self
     {
         $this->student = $student;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getThread(): ?MessageThread
+    {
+        return $this->thread;
+    }
+
+    public function setThread(?MessageThread $thread): self
+    {
+        $this->thread = $thread;
+
+        return $this;
+    }
+
+    public function getSenderTeacher(): ?User
+    {
+        return $this->senderTeacher;
+    }
+
+    public function setSenderTeacher(?User $senderTeacher): self
+    {
+        $this->senderTeacher = $senderTeacher;
+
+        return $this;
+    }
+
+    public function getSenderParent(): ?Student
+    {
+        return $this->senderParent;
+    }
+
+    public function setSenderParent(?Student $senderParent): self
+    {
+        $this->senderParent = $senderParent;
 
         return $this;
     }

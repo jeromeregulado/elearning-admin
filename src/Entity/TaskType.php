@@ -36,10 +36,10 @@ class TaskType
      */
     private $grades;
 
-    /**
-     * @var \App\Entity\Event
-     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="task")
-     */
+//    /**
+//     * @var \App\Entity\Event
+//     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="task")
+//     */
     private $event;
 
     public function __construct()
