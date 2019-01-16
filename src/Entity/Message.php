@@ -8,12 +8,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class Message
  * @package App\Entity\Message
  * @ORM\Entity(repositoryClass="App\Repository\MessageRepository")
+ * @ApiResource()
  */
 class Message
 {

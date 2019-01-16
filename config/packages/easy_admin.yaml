@@ -10,6 +10,7 @@ easy_admin:
       - { entity: 'Lesson', role: ROLE_TEACHER }
       - { entity: 'Attendance', role: ROLE_TEACHER }
       - { entity: 'Activity', role: ROLE_TEACHER }
+      - { label: 'Message', role: ROLE_TEACHER, route: 'redirect_message', target: '_blank' }
       - { label: 'Settings', children: [ { label: 'Change Password', route: 'teacher_update_password', role: ROLE_TEACHER }, { label: 'Logout', route: 'logout' } ] }
   entities:
     Event:

@@ -9,7 +9,6 @@
 namespace App\Controller;
 
 use App\Entity\Message;
-use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,11 +24,14 @@ class MessageController extends Controller
     public function indexAction($id)
     {
         $senderList = $this->getDoctrine()->getRepository('App:Message')->getSenderList($id);
-        $message = $this->getDoctrine()->getRepository('App:Message')->getMessages($senderList[0]['thread']);
+        $data = [];
 
-        $data['sender'] = $senderList;
-        $data['message'] = $message;
-        dump($data);
+        if (!empty($senderList)) {
+            $message = $this->getDoctrine()->getRepository('App:Message')->getMessages($senderList[0]['thread']);
+
+            $data['sender'] = $senderList;
+            $data['message'] = $message;
+        }
         return $this->render('message/base.html.twig', ['data' => $data]);
     }
 
@@ -76,5 +78,17 @@ class MessageController extends Controller
 
         $message = $this->getDoctrine()->getRepository('App:Message')->getMessages($request->get('threadId'));
         return $this->render('message/messages.html.twig', ['data' => ['message' => $message]]);
+    }
+
+    /**
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @Route(
+     *     name="redirect_message",
+     *     path="/admin/messages"
+     * )
+     */
+    public function redirectMessage()
+    {
+        return $this->redirectToRoute('message_index', ['id' => $this->getUser()->getid()]);
     }
 }

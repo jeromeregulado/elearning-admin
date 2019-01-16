@@ -1,18 +1,19 @@
-
-{% for message in data.message %}
-    {% if app.request.get('id') == message.sender %}
-        <div class="outgoing_msg">
-            <div class="sent_msg">
-                <p>{{ message.message }}</p>
-                <span class="time_date"> {{ message.createdAt|date('H:m') ~ " | " ~ message.createdAt|date('M j') }}</span></div>
-        </div>
-    {% else %}
-        <div class="incoming_msg">
-            <div class="received_msg">
-                <div class="received_withd_msg">
+{% if data is not empty %}
+    {% for message in data.message %}
+        {% if app.request.get('id') == message.sender %}
+            <div class="outgoing_msg">
+                <div class="sent_msg">
                     <p>{{ message.message }}</p>
                     <span class="time_date"> {{ message.createdAt|date('H:m') ~ " | " ~ message.createdAt|date('M j') }}</span></div>
             </div>
-        </div>
-    {% endif %}
-{% endfor %}
+        {% else %}
+            <div class="incoming_msg">
+                <div class="received_msg">
+                    <div class="received_withd_msg">
+                        <p>{{ message.message }}</p>
+                        <span class="time_date"> {{ message.createdAt|date('H:m') ~ " | " ~ message.createdAt|date('M j') }}</span></div>
+                </div>
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}

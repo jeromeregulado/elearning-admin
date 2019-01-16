@@ -1,11 +1,12 @@
-
-{% for sender in data.sender %}
-    <div class="chat_list {{ (loop.first) ? 'active_chat': '' }}" id="{{ sender.thread }}">
-        <div class="chat_people">
-            <div class="chat_ib">
-                <h5>{{ sender.firstName ~ " " ~ sender.lastName }} <span class="chat_date">{{ sender.createdAt|date("M j") }}</span></h5>
-                <p>{{ sender.message }}</p>
+{% if data is not empty %}
+    {% for sender in data.sender %}
+        <div class="chat_list {{ (loop.first) ? 'active_chat': '' }}" id="{{ sender.thread }}">
+            <div class="chat_people">
+                <div class="chat_ib">
+                    <h5>{{ sender.firstName ~ " " ~ sender.lastName }} <span class="chat_date">{{ sender.createdAt|date("M j") }}</span></h5>
+                    <p>{{ sender.message }}</p>
+                </div>
             </div>
         </div>
-    </div>
-{% endfor %}
+    {% endfor %}
+{% endif %}
